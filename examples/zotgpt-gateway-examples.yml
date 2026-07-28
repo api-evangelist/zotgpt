@@ -1,0 +1,103 @@
+generated: '2026-07-28'
+method: searched
+source:
+  - https://zotgpt.uci.edu/services/gateway/clients/
+  - https://zotgpt.uci.edu/services/migrate-azure-api/
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  Code and configuration examples published by UC Irvine for the ZotGPT Gateway,
+  captured verbatim where UCI shows code and reconstructed faithfully from UCI's
+  prose where it describes configuration in words. Every value below —
+  base URLs, header names, provider aliases, model slugs — is quoted from UCI's
+  own documentation.
+tags:
+  - Examples
+  - Code Samples
+  - Migration
+examples:
+  - name: Migrate a Python OpenAI client from the Azure API to the Gateway
+    language: python
+    method: searched
+    source: https://zotgpt.uci.edu/services/migrate-azure-api/
+    verbatim: true
+    before: |
+      client = OpenAI(
+          api_key="YOUR_AZURE_API_KEY",
+          base_url="https://api.azureapi.zotgpt.uci.edu/v1"
+      )
+    after: |
+      client = OpenAI(
+          api_key="YOUR_VIRTUAL_KEY",
+          base_url="https://app.portkey.ai/v1"
+      )
+    note: >-
+      UCI states that model names and request structures are unchanged — only the
+      host and the credential move.
+  - name: Route a chat completion to Claude Opus on AWS Bedrock
+    language: python
+    method: generated
+    source: https://zotgpt.uci.edu/services/gateway/clients/
+    note: >-
+      Reconstructed from UCI's documented base URL, header name, provider alias,
+      and the exact model slug UCI publishes
+      (@zotgpt-api-bedrock/us.anthropic.claude-opus-4-7). Not copied from a UCI
+      code block.
+    code: |
+      from openai import OpenAI
+
+      client = OpenAI(
+          api_key="YOUR_VIRTUAL_KEY",
+          base_url="https://api.portkey.ai/v1",
+      )
+
+      resp = client.chat.completions.create(
+          model="@zotgpt-api-bedrock/us.anthropic.claude-opus-4-7",
+          messages=[{"role": "user", "content": "Summarize this syllabus in five bullets."}],
+      )
+  - name: Point Claude Desktop at the Gateway
+    language: configuration
+    method: searched
+    source: https://zotgpt.uci.edu/services/gateway/clients/
+    steps:
+      - Enable Developer Mode from the Help menu.
+      - Set the Gateway auth scheme to bearer.
+      - 'Add the header x-portkey-provider: @zotgpt-api-bedrock/'
+      - Turn off model discovery and add models manually from the Model Catalog.
+      - Test the connection with the in-app verification.
+  - name: Point VS Code at the Gateway
+    language: json
+    method: searched
+    source: https://zotgpt.uci.edu/services/gateway/clients/
+    file: chatLanguageModels.json
+    steps:
+      - Use https://api.portkey.ai/v1 as the URL.
+      - Include the x-portkey-api-key header carrying your virtual key.
+  - name: Point opencode at the Gateway
+    language: json
+    method: searched
+    source: https://zotgpt.uci.edu/services/gateway/clients/
+    file: opencode.json
+    steps:
+      - Configure globally or per project.
+      - Register either an Anthropic-style or an OpenAI-compatible provider.
+      - Optionally add a local provider for on-device testing alongside it.
+  - name: The three-step setup pattern UCI documents for any client
+    method: searched
+    source: https://zotgpt.uci.edu/services/gateway/clients/
+    steps:
+      - Point the base URL at the ZotGPT Gateway instead of the vendor default.
+      - Replace the vendor API key with your self-managed virtual key.
+      - Select a model slug from the Model Catalog and restart.
+base_urls:
+  openai_compatible: https://api.portkey.ai/v1
+  anthropic_style: https://api.portkey.ai
+  migration_guide_states: https://app.portkey.ai/v1
+provider_aliases:
+  - '@zotgpt-api-bedrock'
+  - '@openai-prod'
+model_slugs_documented:
+  - '@zotgpt-api-bedrock/us.anthropic.claude-opus-4-7'
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,110 @@
+generated: '2026-07-28'
+method: searched
+source:
+  - https://zotgpt.uci.edu/services/gateway/
+  - https://zotgpt.uci.edu/services/gateway/clients/
+  - https://zotgpt.uci.edu/services/api/
+  - https://zotgpt.uci.edu/services/chat/
+specification: API Commons Authentication
+specificationVersion: '0.1'
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  ZotGPT runs two distinct authentication planes. Human access to every
+  interactive product is federated campus SSO — a Shibboleth SAML2 redirect to
+  shib.service.uci.edu, observed live on chat.zotgpt.uci.edu. Machine access is
+  key-based, and the key is always minted only after a human has authenticated
+  with UCInetID: an Azure API Management subscription key for the deprecated
+  API, and a workspace virtual key for the Gateway. There is no anonymous
+  self-service signup on either plane, and there is no public OAuth
+  authorization server.
+tags:
+  - Authentication
+  - SSO
+  - SAML
+  - Shibboleth
+  - API Keys
+  - Identity
+schemes:
+  - name: UCInetID Single Sign-On (Shibboleth SAML 2.0)
+    type: federated-sso
+    protocol: SAML 2.0
+    idp: https://shib.service.uci.edu/idp/profile/SAML2/Redirect/SSO
+    applies_to:
+      - https://chat.zotgpt.uci.edu/
+      - https://classchat.zotgpt.uci.edu/
+      - https://creator.zotgpt.uci.edu/
+      - https://app.portkey.ai (Gateway portal sign-in)
+    evidence:
+      probed: '2026-07-28'
+      request: GET https://chat.zotgpt.uci.edu/
+      response: >-
+        HTTP 302 to
+        https://shib.service.uci.edu/idp/profile/SAML2/Redirect/SSO?SAMLRequest=...
+        with an _opensaml_req session cookie (secure, HttpOnly, SameSite=None).
+    notes: >-
+      Every end-user surface is behind campus identity. This is the mechanism
+      that makes affiliation-based entitlement possible — the platform knows
+      whether the caller is faculty, staff, a graduate student, or an
+      undergraduate before it decides what they may spend.
+  - name: Gateway virtual API key
+    type: apiKey
+    in: header
+    header: x-portkey-api-key
+    also_accepted_as: >-
+      bearer scheme, documented for Anthropic-style clients such as Claude
+      Desktop
+    applies_to: https://api.portkey.ai/v1
+    issued_by: >-
+      The user, self-service, inside their ZotGPT Gateway workspace after
+      UCInetID sign-in.
+    scoped_to: workspace
+    controls:
+      - per-key spend limits
+      - workspace budget enforcement
+      - provider selection via x-portkey-provider alias
+    handling: >-
+      UCI documents the virtual key as "treat as a password."
+    notes: >-
+      Self-managed key issuance is the structural change from the previous
+      generation: the old API required a ServiceNow ticket per developer, the
+      Gateway does not.
+  - name: Azure API Management key (deprecated)
+    type: http
+    scheme: bearer
+    applies_to: https://api.zotgpt.uci.edu/v1
+    issued_by: >-
+      Azure API Management developer portal at portal.azureapi.zotgpt.uci.edu,
+      after an approved ServiceNow request
+      (uci.service-now.com KB0013367).
+    eligibility: UCI faculty and staff
+    status: deprecated
+    end_of_life: >-
+      "All remaining Azure API keys disabled" at the end of the three-month
+      migration window.
+provider_routing:
+  description: >-
+    The Gateway does not expose upstream vendor credentials to callers. A campus
+    alias is presented instead, and UCI holds the vendor contracts and keys
+    behind it. This is the control point that lets UCI change vendors without
+    changing any campus client code.
+  header: x-portkey-provider
+  aliases_documented:
+    - '@zotgpt-api-bedrock'
+    - '@openai-prod'
+  example_model_slug: '@zotgpt-api-bedrock/us.anthropic.claude-opus-4-7'
+oauth:
+  authorization_server: none published
+  probed:
+    - path: /.well-known/oauth-authorization-server
+      host: zotgpt.uci.edu
+      status: 404
+gaps:
+  - No public, machine-readable authentication reference (no OpenAPI
+    securitySchemes published by UCI, no OIDC discovery document).
+  - No documented key rotation policy or key lifetime for Gateway virtual keys.
+  - No documented scope model — a virtual key is bounded by budget, not by
+    capability.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

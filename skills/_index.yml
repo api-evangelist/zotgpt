@@ -1,0 +1,21 @@
+generated: '2026-07-28'
+method: generated
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  Agent skills packaging ZotGPT's operating instructions. UC Irvine publishes no
+  agent skills of its own; these are generated from its public documentation and
+  the repo's OpenAPI artifacts.
+skills:
+  - name: zotgpt-gateway
+    file: zotgpt-gateway.md
+    summary: >-
+      Call the ZotGPT Gateway for chat completions and embeddings — setup, base
+      URLs, virtual keys, campus provider aliases and model slugs, migration off
+      the deprecated Azure API, budget semantics, data-handling constraints, and
+      the documented gaps.
+    api: openapi/zotgpt-gateway-openapi.yml
+    audience: UC Irvine faculty, staff, researchers, and sponsored students
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

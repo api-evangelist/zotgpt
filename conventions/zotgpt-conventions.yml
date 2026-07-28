@@ -1,0 +1,85 @@
+generated: '2026-07-28'
+method: derived
+source:
+  - https://zotgpt.uci.edu/services/gateway/
+  - https://zotgpt.uci.edu/services/gateway/clients/
+  - https://zotgpt.uci.edu/services/migrate-azure-api/
+  - openapi/zotgpt-gateway-openapi.yml
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  The runtime conventions a caller has to know to use ZotGPT. Most of them are
+  inherited rather than authored: by adopting the Portkey specification and
+  OpenAI-compatible request shapes, UCI inherited a convention set instead of
+  publishing one. The conventions that ARE distinctly UCI's are the ones that
+  encode campus policy — the provider alias, the virtual key, and the budget.
+tags:
+  - Conventions
+  - API Design
+  - OpenAI Compatible
+conventions:
+  base_url:
+    openai_compatible: https://api.portkey.ai/v1
+    anthropic_style: https://api.portkey.ai
+    note: >-
+      The base URL is the migration seam. UCI's entire documented upgrade path is
+      "point the base URL at the ZotGPT Gateway instead of vendor defaults."
+  versioning:
+    scheme: path
+    value: /v1
+    note: Both API generations use /v1; the shape did not change across the migration.
+  authentication:
+    header: x-portkey-api-key
+    alternative: bearer scheme for Anthropic-style clients
+    unit: workspace virtual key
+  provider_routing:
+    header: x-portkey-provider
+    values_documented:
+      - '@zotgpt-api-bedrock'
+      - '@openai-prod'
+    also_expressible_as: a prefix on the model slug
+    note: >-
+      This is the campus's own convention and the most important one in the file.
+      It is the indirection that keeps vendor identity out of application code —
+      a caller names a UCI alias, not a vendor account.
+  model_selection:
+    unit: model slug from the campus Model Catalog
+    example: '@zotgpt-api-bedrock/us.anthropic.claude-opus-4-7'
+    note: >-
+      "Additional models added continuously without code changes" — model
+      addition is a catalog operation, not a deployment.
+  content_type: application/json
+  streaming:
+    supported: true
+    mechanism: Server-Sent Events, via the standard stream flag on the request body
+  errors:
+    envelope: OpenAI-compatible error object
+    documented_by_uci: false
+    note: >-
+      UCI publishes no error reference of its own. Callers see whatever the
+      gateway and the upstream provider return.
+  idempotency:
+    supported: not documented
+    note: >-
+      No idempotency key convention appears anywhere in ZotGPT documentation.
+      Recorded as absent rather than assumed present.
+  pagination:
+    applicable: false
+    note: Chat completions and embeddings are single-shot operations.
+  request_id:
+    documented: false
+  budget_semantics:
+    unit: USD credits drawn against token usage
+    enforcement: per-key spend limits and workspace budgets
+    note: >-
+      A ZotGPT caller has to reason about dollars, not just rate limits. This is
+      the convention most unlike a commercial AI API.
+gaps:
+  - No published error catalog or error-code registry.
+  - No documented idempotency, request-id, or retry contract.
+  - No documented budget-remaining response header, so a client cannot see how
+    close it is to its ceiling without visiting the portal.
+  - No machine-readable model catalog endpoint — the catalog is a portal page.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

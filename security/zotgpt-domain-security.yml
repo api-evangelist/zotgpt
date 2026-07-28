@@ -1,0 +1,136 @@
+generated: '2026-07-28'
+method: probed
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  Live TLS, transport, DNS, and identity-plane probe of the ZotGPT hosts. The
+  probe is the clearest single piece of evidence for the platform's multi-cloud
+  posture: every interactive product terminates on a UC Irvine-owned AWS
+  Application Load Balancer in us-west-2 under the *.aws.uci.edu naming
+  convention, with an Amazon-issued certificate, while the developer API control
+  plane terminates on Azure API Management in the same region. Two clouds, one
+  campus namespace.
+tags:
+  - Domain Security
+  - TLS
+  - Multi-Cloud
+  - Shibboleth
+hosts:
+  - host: zotgpt.uci.edu
+    status: 200
+    protocol: HTTP/2
+    server: nginx
+    cloud: AWS
+    resolves_to:
+      - zotgpt-lb.zot-gpt-prod.aws.uci.edu
+      - zotgpt-alb-prod-1683233264.us-west-2.elb.amazonaws.com
+      - 44.237.46.108
+      - 44.227.122.188
+    tls:
+      issuer: 'C=US, O=Amazon, CN=Amazon RSA 2048 M04'
+      subject: 'CN=zotgpt-lb.zot-gpt-prod.aws.uci.edu'
+      not_before: '2026-02-14'
+      not_after: '2027-03-15'
+    notes: >-
+      Marketing and documentation site. Certificate CN is the AWS account's
+      internal LB name, which is why the campus AWS account naming
+      (zot-gpt-prod) is externally visible.
+  - host: chat.zotgpt.uci.edu
+    status: 302
+    cloud: AWS
+    aws_account_env: zot-gpt-prod
+    resolves_to:
+      - zotgpt-lb.zot-gpt-prod.aws.uci.edu
+      - zotgpt-alb-prod-1683233264.us-west-2.elb.amazonaws.com
+    auth_redirect: https://shib.service.uci.edu/idp/profile/SAML2/Redirect/SSO
+    notes: >-
+      Redirects unauthenticated callers into the campus Shibboleth IdP. Sets
+      secure, HttpOnly, SameSite=None OpenSAML session cookies.
+  - host: classchat.zotgpt.uci.edu
+    cloud: AWS
+    aws_account_env: oit-instructorbot-prod
+    resolves_to:
+      - oit-instrbt-lb.oit-instructorbot-prod.aws.uci.edu
+      - oit-instrbt-alb-prod-679918224.us-west-2.elb.amazonaws.com
+    notes: >-
+      Separate ALB and separate environment from Chat — the "modular
+      architecture ... isolates each instance with separate policies" that UCI
+      describes for classroom versus private use is visible in DNS.
+  - host: creator.zotgpt.uci.edu
+    cloud: AWS
+    aws_account_env: oit-zotgptcreator-prod
+    resolves_to:
+      - oit-creator-lb.oit-zotgptcreator-prod.aws.uci.edu
+      - oit-creator-alb-prod-1057247275.us-west-2.elb.amazonaws.com
+    notes: A third isolated production environment.
+  - host: portal.azureapi.zotgpt.uci.edu
+    status: 200
+    cloud: Azure
+    resolves_to:
+      - oit-apim-usw2.azure-api.net
+      - apimgmttmljklbukrkr823ui1xipvjxn6zcs2mi4dh7zzcjwze.trafficmanager.net
+      - oit-apim-usw2-westus2-01.regional.azure-api.net
+      - 172.179.148.210
+    title: 'UC Irvine API Management'
+    notes: >-
+      Azure API Management developer portal, West US 2, fronted by Azure Traffic
+      Manager. The APIM gateway itself (oit-apim-usw2.azure-api.net) answers with
+      an APIM JSON envelope. This is the developer control plane for the
+      deprecated API.
+  - host: api.zotgpt.uci.edu
+    status: 0
+    resolves: false
+    notes: >-
+      Documented data-plane host for the deprecated API. NXDOMAIN from the public
+      internet — campus-internal or already withdrawn.
+  - host: api.azureapi.zotgpt.uci.edu
+    status: 0
+    resolves: false
+    notes: Old base URL quoted in the migration guide. NXDOMAIN publicly.
+identity_plane:
+  idp: https://shib.service.uci.edu/idp/profile/SAML2/Redirect/SSO
+  metadata: https://shib.service.uci.edu/idp/shibboleth
+  metadata_status: 200
+  metadata_content_type: application/xml
+  protocol: SAML 2.0 (Shibboleth)
+  notes: >-
+    The IdP publishes its SAML metadata anonymously — the only machine-readable
+    descriptor anywhere in the ZotGPT estate that a third party can retrieve
+    without credentials.
+email_domain_security:
+  domain: uci.edu
+  spf: 'v=spf1 include:%{ir}.%{v}.%{d}.spf.has.pphosted.com ?all'
+  spf_notes: >-
+    Proofpoint macro-expanded include with a soft ?all rather than -all.
+  dmarc: 'v=DMARC1; p=none; fo=1; rua=mailto:dmarc_rua@emaildefense.proofpoint.com; ruf=mailto:dmarc_ruf@emaildefense.proofpoint.com'
+  dmarc_policy: none
+  dmarc_notes: Monitoring only; no quarantine or reject enforcement.
+  dnssec: not enabled (no DS record for uci.edu)
+  caa: no CAA record published for uci.edu
+findings:
+  - severity: informational
+    finding: >-
+      Multi-cloud is real and externally verifiable — AWS us-west-2 for every
+      application plane, Azure West US 2 for the API management plane.
+  - severity: informational
+    finding: >-
+      Product isolation is real — Chat, ClassChat, and Creator each run in their
+      own named AWS production environment behind their own load balancer.
+  - severity: low
+    finding: >-
+      No security.txt at /.well-known/security.txt on any ZotGPT host (404).
+  - severity: low
+    finding: >-
+      No robots.txt on zotgpt.uci.edu (404), and no sitemap.xml.
+  - severity: low
+    finding: >-
+      uci.edu publishes no CAA record and no DS record (DNSSEC not enabled), and
+      DMARC is at p=none.
+  - severity: informational
+    finding: >-
+      Internal AWS account and environment names (zot-gpt-prod,
+      oit-instructorbot-prod, oit-zotgptcreator-prod) are disclosed through
+      certificate subjects and CNAME chains.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

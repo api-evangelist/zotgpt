@@ -1,0 +1,111 @@
+generated: '2026-07-28'
+method: searched
+source:
+  - https://www.oit.uci.edu/2026/04/16/zotgpt-spring-2026-updates/
+  - https://www.oit.uci.edu/2025/09/23/zotgpt-new-models-available/
+  - https://www.oit.uci.edu/2025/11/18/anteaterintelligence-how-zotgpt-creator-is-transforming-uci-websites/
+  - https://www.oit.uci.edu/2026/02/24/anteaterintelligence-students-practice-patient-care-with-zotgpt-ai-simulations/
+  - https://www.oit.uci.edu/2026/01/29/anteaterintelligence-uc-irvine-hr-integrates-zotgpt-ai-tools-into-yearly-innovation-challenge/
+  - https://www.oit.uci.edu/2025/12/19/building-the-future-ucis-build-a-bot-workshop-celebrates-ai-creativity-and-impact/
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  ZotGPT has no dedicated changelog page or feed. Release information is
+  published as dated posts on the UCI OIT news site under the #AnteaterIntelligence
+  banner. These entries are structured from those posts.
+format: blog-posts
+feed: none published
+entries:
+  - date: '2026-04-16'
+    title: ZotGPT Spring 2026 Updates
+    url: https://www.oit.uci.edu/2026/04/16/zotgpt-spring-2026-updates/
+    changes:
+      - type: models
+        detail: >-
+          GPT-5.4 added, with visible reasoning traces — "GPT-5 series models now
+          show reasoning traces. You can see the step-by-step thinking behind
+          every response."
+      - type: models
+        detail: Moonshot Kimi K2.5 added.
+      - type: models
+        detail: Claude 4.6 series added.
+      - type: feature
+        product: Creator
+        detail: >-
+          New Agents feature for linking multiple AI assistants together; custom
+          Initial Messages.
+      - type: feature
+        product: Chat
+        detail: >-
+          Folder organization; multi-media support for images, documents, video
+          and audio via Gemini 2.5; bulk upload of up to 10 files; direct
+          file/image paste; PDF Vision for image-based processing.
+      - type: feature
+        product: ClassChat
+        detail: >-
+          Copy classes between quarters; Knowledge Priority Control for weighting
+          course materials; student delete controls; Modules renamed Activities.
+      - type: feature
+        product: all
+        detail: >-
+          LaTeX (.tex) and Markdown (.md) extraction; customizable tool toggles
+          (calculator, renderer, analysis).
+      - type: security
+        detail: All models carry P3 security protection for sensitive data.
+  - date: '2026-02-24'
+    title: Students practice patient care with ZotGPT AI simulations
+    url: https://www.oit.uci.edu/2026/02/24/anteaterintelligence-students-practice-patient-care-with-zotgpt-ai-simulations/
+    changes:
+      - type: adoption
+        detail: Clinical simulation use case in health sciences instruction.
+  - date: '2026-01-29'
+    title: UC Irvine HR integrates ZotGPT AI tools into yearly Innovation Challenge
+    url: https://www.oit.uci.edu/2026/01/29/anteaterintelligence-uc-irvine-hr-integrates-zotgpt-ai-tools-into-yearly-innovation-challenge/
+    changes:
+      - type: adoption
+        detail: Administrative adoption beyond teaching and research.
+  - date: '2025-12-19'
+    title: UCI's Build-a-Bot workshop celebrates AI creativity and impact
+    url: https://www.oit.uci.edu/2025/12/19/building-the-future-ucis-build-a-bot-workshop-celebrates-ai-creativity-and-impact/
+    changes:
+      - type: program
+        detail: Campus workshop program driving Creator adoption.
+  - date: '2025-11-18'
+    title: How ZotGPT Creator is transforming UCI websites
+    url: https://www.oit.uci.edu/2025/11/18/anteaterintelligence-how-zotgpt-creator-is-transforming-uci-websites/
+    changes:
+      - type: adoption
+        detail: >-
+          "over 1,000 custom bots" built by UCI employees since Creator launched,
+          replacing third-party solutions costing "upwards of $10,000 each."
+          Named deployments include ZotDesk (OIT help desk), a Financial Services
+          billing chatbot, and BANA Bot at the Merage School of Business.
+  - date: '2025-09-23'
+    title: 'ZotGPT: New Models Available'
+    url: https://www.oit.uci.edu/2025/09/23/zotgpt-new-models-available/
+    changes:
+      - type: models
+        detail: >-
+          Claude Opus 4.1 (Anthropic) — "The latest and most powerful model from
+          Anthropic. Exceptional at coding tasks and has strong reasoning
+          capabilities."
+      - type: models
+        detail: >-
+          Google Gemini 2.5 Pro — "Substantially large context performer overall
+          with incredibly fast reasoning."
+      - type: models
+        detail: >-
+          DeepSeek-R1 (open source) — "An open-source model that provides a
+          unique experience from the other large AI providers."
+      - type: models
+        detail: >-
+          GPT-5 (OpenAI) — "The latest model from OpenAI, great for
+          general-purpose tasks, has improved reasoning and coding capabilities."
+gaps:
+  - No changelog page, RSS feed, or JSON feed dedicated to ZotGPT releases.
+  - No per-product version numbers.
+  - Model catalog additions are announced in prose, not as a machine-readable
+    model list.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

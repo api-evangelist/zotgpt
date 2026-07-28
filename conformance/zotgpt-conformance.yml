@@ -1,0 +1,97 @@
+generated: '2026-07-28'
+method: searched
+source:
+  - https://zotgpt.uci.edu/privacy/
+  - https://zotgpt.uci.edu/services/gateway/
+  - https://www.oit.uci.edu/2026/04/16/zotgpt-spring-2026-updates/
+  - https://www.security.uci.edu/program/classification/protection-levels/
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  ZotGPT's compliance story is institutional rather than commercial. There is no
+  SOC 2 report, no ISO certificate, no trust center — because the operator is the
+  university's own IT organization and the governing framework is UC policy, not
+  a customer contract. What it conforms to is the UC Irvine data protection level
+  scheme, and what it conforms to technically is somebody else's API
+  specification.
+tags:
+  - Conformance
+  - Compliance
+  - Data Protection
+  - Privacy
+institutional_controls:
+  - name: UC Irvine Protection Level P3
+    applies_to: All ZotGPT products and all models in the catalog
+    statement: >-
+      "Built on Microsoft Azure and AWS with encryption in transit and at rest,
+      following P3 security standards." The Spring 2026 release states all models
+      carry P3 protection.
+    reference: https://www.security.uci.edu/program/classification/protection-levels/
+  - name: Protection Level 4 exclusion
+    statement: '"Level 4 protected data is not permitted."'
+  - name: PHI exclusion
+    statement: '"Protected Health Information should not be shared."'
+  - name: No vendor training on campus data
+    statement: >-
+      "Your data is never used to train AI models or shared with external AI
+      providers for training purposes." Chris Price, AI Architect: "From the
+      beginning, we ensured that no data entered into ZotGPT leaves the
+      university."
+  - name: Retention
+    statement: >-
+      "Stored for up to 12 months" with "Automatic deletion after 12 months" and
+      "Manual deletion available anytime."
+  - name: Federated identity
+    statement: >-
+      Every product is behind UCInetID via Shibboleth SAML 2.0 — verified live as
+      a 302 to shib.service.uci.edu.
+  - name: Chat confidentiality from faculty and staff
+    statement: >-
+      Xanat Hernandez, OIT Communications: "It is more secure, and that includes
+      your chats not being monitored by faculty and staff." ClassChat is the
+      deliberate exception — faculty visibility there is by design, enforced by
+      running it in a separately isolated environment with its own policies.
+technical_conformance:
+  - standard: Portkey API specification
+    role: The Gateway's wire contract
+    statement: >-
+      "ZotGPT Gateway leverages the Portkey API specification — migrate existing
+      code with just a few changes and a new API key."
+    reference: https://portkey.ai/docs/introduction/what-is-portkey
+  - standard: OpenAI Chat Completions compatibility
+    role: Client compatibility surface for both API generations
+    evidence: >-
+      UCI's own migration guide shows the OpenAI Python client used unchanged
+      against both the old and new base URLs.
+  - standard: Anthropic Messages compatibility
+    role: Alternative client shape for the Gateway
+    evidence: >-
+      A separate Anthropic-style base URL and a documented Claude Desktop
+      configuration.
+  - standard: SAML 2.0 / Shibboleth
+    role: Identity federation
+    evidence: Live 302 to the campus IdP; IdP metadata retrievable as application/xml.
+  - standard: Azure API Management
+    role: Gateway and developer portal for the deprecated API
+    evidence: >-
+      portal.azureapi.zotgpt.uci.edu resolves through oit-apim-usw2.azure-api.net
+      and returns APIM's JSON error envelope at the gateway root.
+certifications_published: none
+trust_center: none published
+audit_reports: none published
+gaps:
+  - No trust center, SOC 2, ISO 27001, or third-party audit artifact is published
+    for ZotGPT specifically — the campus security program is the referenced
+    authority instead.
+  - No FERPA or HIPAA statement appears in the ZotGPT privacy notice, despite
+    ClassChat handling student coursework and the platform being used for
+    clinical simulation training.
+  - No security.txt and no published vulnerability disclosure path for the
+    ZotGPT hosts.
+  - No published DPA or model-provider subprocessor list, so the "never used to
+    train" commitment is asserted rather than evidenced per vendor.
+  - No machine-readable statement of any of the above — the entire compliance
+    posture is prose on a web page.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

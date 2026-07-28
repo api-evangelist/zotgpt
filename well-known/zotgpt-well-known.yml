@@ -1,0 +1,96 @@
+generated: '2026-07-28'
+method: probed
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  Probe of the machine-readable discovery surface across every ZotGPT host. The
+  result is a clean, complete absence: no security.txt, no llms.txt, no API
+  catalog, no OIDC discovery document, no OAuth authorization-server metadata,
+  no agent card, not even a robots.txt. For a platform this deliberate about its
+  human-facing documentation, the agent-facing discovery layer is entirely
+  unbuilt. Recorded here as proof of absence rather than as an unchecked gap.
+hosts_probed:
+  - zotgpt.uci.edu
+  - chat.zotgpt.uci.edu
+  - portal.azureapi.zotgpt.uci.edu
+  - api.zotgpt.uci.edu
+documents:
+  - path: /.well-known/security.txt
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/openid-configuration
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/api-catalog
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/agent.json
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/agent-card.json
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/agent-card.json
+    host: chat.zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/agent.json
+    host: chat.zotgpt.uci.edu
+    status: 404
+  - path: /.well-known/agent-card.json
+    host: portal.azureapi.zotgpt.uci.edu
+    status: 404
+  - path: /llms.txt
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /llms.txt
+    host: chat.zotgpt.uci.edu
+    status: 200
+    accepted: false
+    reason: >-
+      Body is the 1.6KB SAML redirect shell served for every path on the
+      authenticated app host, not an llms.txt document. Classic single-page-app
+      catch-all false positive; rejected.
+  - path: /robots.txt
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /sitemap.xml
+    host: zotgpt.uci.edu
+    status: 404
+  - path: /openapi.json
+    host: api.zotgpt.uci.edu
+    status: 0
+    reason: NXDOMAIN
+  - path: /openapi.yaml
+    host: api.zotgpt.uci.edu
+    status: 0
+    reason: NXDOMAIN
+  - path: /swagger.json
+    host: api.zotgpt.uci.edu
+    status: 0
+    reason: NXDOMAIN
+  - path: /api-docs
+    host: api.zotgpt.uci.edu
+    status: 0
+    reason: NXDOMAIN
+  - path: /v1/models
+    host: api.zotgpt.uci.edu
+    status: 0
+    reason: NXDOMAIN
+  - path: /openapi.json
+    host: portal.azureapi.zotgpt.uci.edu
+    status: 404
+found: []
+notes: >-
+  The one machine-readable descriptor that IS anonymously retrievable in the
+  estate is the campus Shibboleth IdP's SAML metadata at
+  https://shib.service.uci.edu/idp/shibboleth (200, application/xml). It
+  describes identity, not the AI APIs.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

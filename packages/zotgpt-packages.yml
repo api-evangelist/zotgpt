@@ -1,0 +1,95 @@
+generated: '2026-07-28'
+method: searched
+source:
+  - https://zotgpt.uci.edu/services/gateway/
+  - https://zotgpt.uci.edu/services/gateway/clients/
+  - https://zotgpt.uci.edu/services/migrate-azure-api/
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  UC Irvine ships no first-party client library. The Gateway's stated migration
+  path is to use the upstream Portkey SDKs, or any OpenAI-/Anthropic-compatible
+  client repointed at the Gateway base URL. This is a legitimate strategy — by
+  adopting an existing API specification rather than inventing one, UCI inherits
+  a client ecosystem it does not have to build or maintain. It is recorded
+  honestly here: official is false on every row, because none of these are
+  UCI-authored.
+tags:
+  - SDKs
+  - Clients
+  - Portkey
+  - OpenAI Compatible
+first_party_sdks: none
+strategy: >-
+  "Switch from API endpoint to Portkey SDK — available today for Python,
+  JavaScript, and .Net." UCI documents Java, PHP, Ruby, and Go as coming soon
+  from the same upstream. Callers who prefer not to adopt the SDK can keep their
+  existing OpenAI or Anthropic client and change only the base URL and the key.
+packages:
+  - language: python
+    registry: pypi
+    name: portkey-ai
+    url: https://pypi.org/project/portkey-ai/
+    install: pip install portkey-ai
+    official: false
+    vendor: Portkey
+    note: Documented by UCI as available today for the Gateway.
+  - language: javascript
+    registry: npm
+    name: portkey-ai
+    url: https://www.npmjs.com/package/portkey-ai
+    install: npm install portkey-ai
+    official: false
+    vendor: Portkey
+    note: Documented by UCI as available today for the Gateway.
+  - language: dotnet
+    registry: nuget
+    name: Portkey SDK (.Net)
+    url: https://portkey.ai/docs/api-reference/sdk/list
+    official: false
+    vendor: Portkey
+    note: >-
+      Documented by UCI as available today. Package identifier not named on UCI's
+      page; upstream SDK list is the authority.
+  - language: python
+    registry: pypi
+    name: openai
+    url: https://pypi.org/project/openai/
+    install: pip install openai
+    official: false
+    vendor: OpenAI
+    note: >-
+      UCI's own migration guide shows the OpenAI Python client pointed at the
+      Gateway base URL — the compatibility path, no new dependency required.
+planned:
+  - language: java
+    status: coming soon
+  - language: php
+    status: coming soon
+  - language: ruby
+    status: coming soon
+  - language: go
+    status: coming soon
+clients_documented:
+  - name: Claude Desktop
+    detail: >-
+      Enable Developer Mode; set the Gateway auth scheme to bearer; add header
+      x-portkey-provider: '@zotgpt-api-bedrock/'; turn off model discovery and
+      add models manually; test the connection in-app.
+  - name: VS Code
+    detail: >-
+      Edit chatLanguageModels.json; use https://api.portkey.ai/v1 as the URL;
+      include the x-portkey-api-key header.
+  - name: opencode
+    detail: >-
+      Configure opencode.json globally or per project; supports Anthropic-style
+      and OpenAI-compatible providers, with an optional local provider for
+      on-device testing.
+gaps:
+  - No UCI-maintained SDK, so campus-specific concerns (KFS chargeback, tier
+    entitlement, provider aliases) are configuration a developer must get right
+    by hand rather than API surface a library encapsulates.
+  - No published package for the deprecated Azure API.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

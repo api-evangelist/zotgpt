@@ -1,0 +1,84 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+generated: '2026-07-28'
+method: searched
+source:
+  - https://zotgpt.uci.edu/services/gateway/
+  - https://zotgpt.uci.edu/services/gateway/clients/
+  - https://zotgpt.uci.edu/services/api/
+  - https://zotgpt.uci.edu/services/chat/
+created: '2026-07-28'
+modified: '2026-07-28'
+reconciled: false
+tags:
+  - Generative AI
+  - Higher Education
+  - Credits
+  - Budget
+description: >-
+  ZotGPT is not sold. It is an internal campus utility, and its "pricing" is an
+  entitlement model driven by affiliation plus a credit budget drawn against
+  token usage. Every interactive product is free to the whole UCI community; the
+  developer planes hand out starter credits and then tier up on justification
+  rather than on payment. Undergraduates are the one group without a default
+  developer entitlement — they need a sponsoring PI.
+currency: USD
+plans:
+  - name: Chat / ClassChat / Creator / Prompt Library / Academy
+    type: free
+    audience: All UCI students, faculty, and staff
+    price: 0
+    description: >-
+      "Free for all UCI community members." No credit card, no seat license, no
+      per-seat vendor subscription. UCI OIT estimates the value to a student at
+      roughly $100/month, against the ~$20/month thousands of students were
+      already paying for commercial AI subscriptions.
+    limits: Governed by campus acceptable-use and the P3 data protection standard.
+  - name: Gateway — Free Tier
+    type: free
+    audience: >-
+      Affiliation-based. Faculty, staff, and graduate students qualify directly;
+      undergraduates require a sponsoring PI.
+    price: 0
+    credits: 50
+    credits_note: '"$50 free credits for testing."'
+    description: >-
+      Entry tier on the ZotGPT Gateway. Self-service virtual key issuance after
+      UCInetID sign-in, with per-key spend limits.
+  - name: Gateway — Standard Tier
+    type: budgeted
+    audience: UCI faculty, staff, and researchers with a funding source
+    price: chargeback
+    description: >-
+      "Higher usage budgets with KFS validation" — the campus Kuali Financial
+      System account is validated, so consumption is charged back to a real
+      departmental or grant fund rather than to a personal card.
+  - name: Gateway — Advanced Research
+    type: budgeted
+    audience: Validated research use cases
+    price: chargeback
+    description: >-
+      "High-limit access for validated use cases." Intended for research
+      workloads that exceed standard budgets.
+  - name: API (Deprecated) — Azure-managed
+    type: free-with-credits
+    status: deprecated
+    audience: UCI faculty and staff
+    price: 0
+    credits: 200
+    credits_note: '"$200 in initial API credits to get started."'
+    description: >-
+      First-generation developer API, access granted per-request through
+      ServiceNow. New signups are frozen; keys are being disabled at the end of
+      the migration window.
+notes: >-
+  No public per-token rate card is published. Credits are denominated in dollars
+  and drawn against model usage, which means the effective price varies by which
+  model and which cloud a caller routes to — a deliberate consequence of the
+  multi-model design, and the lever the campus uses to steer demand toward
+  cheaper or more sustainable models.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

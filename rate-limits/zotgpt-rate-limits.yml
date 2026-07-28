@@ -1,0 +1,88 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+generated: '2026-07-28'
+method: searched
+source:
+  - https://zotgpt.uci.edu/services/gateway/
+  - https://zotgpt.uci.edu/services/api/
+created: '2026-07-28'
+modified: '2026-07-28'
+reconciled: false
+tags:
+  - Generative AI
+  - Rate Limiting
+  - Budget
+  - Higher Education
+description: >-
+  UC Irvine publishes no numeric request-rate table for either ZotGPT API — no
+  requests-per-minute, no tokens-per-minute, no burst ceiling. What it publishes
+  instead is a SPEND ceiling: usage is governed by dollar-denominated credits,
+  per-key spend limits, and workspace budget enforcement, tiered by affiliation
+  and by whether a funding source has been validated. That is a meaningful design
+  choice rather than an omission — for an internal AI utility the scarce resource
+  is budget, not concurrency, and metering in dollars lets one control surface
+  span models whose per-token costs differ by an order of magnitude.
+notes: >-
+  Recorded as absence of a published numeric limit, not as an unlimited API.
+  Callers should expect provider-side limits from the upstream vendor (OpenAI,
+  AWS Bedrock, Google, Azure) to pass through the gateway, and should implement
+  429 backoff accordingly.
+sources:
+  - https://raw.githubusercontent.com/api-evangelist/zotgpt/refs/heads/main/apis.yml
+responseCodes:
+  throttled: 429
+limits:
+  - name: Gateway virtual key spend limit
+    scope: key
+    metric: usd-spend
+    limit: per-key limit set by the key owner in the Gateway workspace
+    notes: >-
+      Documented as "budget enforcement and per-key spend limits available." The
+      caller sets it; the workspace bounds it.
+  - name: Gateway Free Tier credit
+    scope: user
+    metric: usd-credits
+    limit: '50'
+    notes: '"$50 free credits for testing," affiliation-gated.'
+  - name: Gateway Standard Tier budget
+    scope: account
+    metric: usd-budget
+    limit: higher, KFS-validated
+    notes: Chargeback to a campus financial account raises the ceiling.
+  - name: Gateway Advanced Research budget
+    scope: account
+    metric: usd-budget
+    limit: high-limit, case-validated
+    notes: Reserved for validated research use cases.
+  - name: Deprecated Azure API credit
+    scope: user
+    metric: usd-credits
+    limit: '200'
+    notes: '"$200 in initial API credits," faculty and staff only. Being retired.'
+  - name: Request rate
+    scope: client
+    metric: requests-per-minute
+    limit: not published
+    notes: >-
+      No RPM/TPM figure appears anywhere in ZotGPT documentation. Upstream vendor
+      limits apply through the gateway.
+policies:
+  - name: Backoff strategy
+    description: >-
+      Exponential backoff with jitter on 429; honor Retry-After where the
+      upstream provider sets it.
+  - name: Budget exhaustion
+    description: >-
+      Spend exhaustion is the primary throttle. Request a tier upgrade with a KFS
+      account rather than retrying.
+gaps:
+  - No published requests-per-minute or tokens-per-minute ceiling.
+  - No published quota-headers contract (no documented X-RateLimit-* or
+    budget-remaining header).
+  - No published fair-use or concurrency policy for the interactive products.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

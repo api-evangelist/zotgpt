@@ -1,0 +1,147 @@
+---
+name: ZotGPT (UC Irvine)
+description: >-
+  ZotGPT public developer and platform footprint review for APIs.json
+  cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/zotgpt/refs/heads/main/review.yml
+created: '2026-07-28'
+modified: '2026-07-28'
+reviews:
+  - date: '2026-07-28'
+    rating: 4
+    summary: >-
+      ZotGPT is a genuine first-party API provider, not a vendor reseller. UC
+      Irvine's Office of Information Technology built and operates the platform
+      itself, and every documentation surface resolved live. The developer story
+      is unusually well told for a university: two API generations, a written
+      three-phase deprecation plan with before-and-after migration code, client
+      setup guides for Claude Desktop, VS Code and opencode, a documented
+      provider-alias routing convention, and a credit-and-budget access model
+      tiered by campus affiliation. The multi-cloud claim is externally
+      verifiable rather than marketing — Chat, ClassChat, and Creator each
+      terminate on their own UC Irvine-owned AWS Application Load Balancer in
+      us-west-2 under *.aws.uci.edu with Amazon-issued certificates, while the
+      first-generation API's control plane runs on Azure API Management in West
+      US 2. Every human surface sits behind Shibboleth SAML SSO, verified as a
+      live 302 to the campus IdP. What is missing is the machine-readable layer:
+      no OpenAPI is retrievable anonymously from any host, the Azure API
+      Management developer portal gates its definitions behind sign-in, the
+      documented data-plane hosts do not resolve in public DNS, and the entire
+      /.well-known/ discovery surface is empty — no security.txt, no llms.txt,
+      no API catalog, no agent card, not even robots.txt. Two OpenAPIs in this
+      repo are marked generated and were built strictly from base URLs, headers,
+      provider aliases, model slugs, and operations UCI names verbatim in its own
+      documentation; no endpoint was invented and no live call is claimed.
+    endpoints:
+      - url: https://zotgpt.uci.edu/
+        status: 200
+        note: Platform home; AWS ALB, nginx, HTTP/2. Verified live.
+      - url: https://zotgpt.uci.edu/services/
+        status: 200
+        note: Service index listing Chat, ClassChat, Creator, Gateway, API, Academy, Prompts.
+      - url: https://zotgpt.uci.edu/services/gateway/
+        status: 200
+        note: >-
+          Gateway documentation. Names the Portkey specification, tiers, credits,
+          SDK languages, and supported operations.
+      - url: https://zotgpt.uci.edu/services/gateway/clients/
+        status: 200
+        note: >-
+          Client setup guides. Names both base URLs, the x-portkey-api-key and
+          x-portkey-provider headers, and the model slug
+          @zotgpt-api-bedrock/us.anthropic.claude-opus-4-7.
+      - url: https://zotgpt.uci.edu/services/api/
+        status: 200
+        note: >-
+          Deprecated API page. Names https://api.zotgpt.uci.edu/v1/chat/completions,
+          bearer auth, gpt-4o, and $200 in starter credits.
+      - url: https://zotgpt.uci.edu/services/migrate-azure-api/
+        status: 200
+        note: >-
+          Migration guide with before/after Python and a three-phase retirement
+          timeline. Strong deprecation practice.
+      - url: https://zotgpt.uci.edu/services/chat/
+        status: 200
+        note: Chat product page.
+      - url: https://zotgpt.uci.edu/services/classchat/
+        status: 200
+        note: ClassChat product page; 1,200 pages per module, DeepVis page-level citation.
+      - url: https://zotgpt.uci.edu/services/creator/
+        status: 200
+        note: Creator product page; three access tiers, model selection, knowledge upload.
+      - url: https://zotgpt.uci.edu/services/academy/
+        status: 200
+        note: AI literacy training modules.
+      - url: https://zotgpt.uci.edu/services/marketplace/
+        status: 200
+        note: Community tool marketplace; no individual listings enumerated on the page.
+      - url: https://zotgpt.uci.edu/prompts/
+        status: 200
+        note: Prompt Library, 44 prompts across ~30 tags.
+      - url: https://zotgpt.uci.edu/privacy/
+        status: 200
+        note: P3 standard, 12-month retention, no vendor training, L4 and PHI excluded.
+      - url: https://zotgpt.uci.edu/sustainability/
+        status: 200
+        note: >-
+          States models are "spread across three different cloud vendors" and
+          frames vendor choice as a sustainability lever.
+      - url: https://zotgpt.uci.edu/partners/
+        status: 200
+        note: Zoom, Microsoft Copilot / M365 Copilot, Google Gemini and NotebookLM.
+      - url: https://zotgpt.uci.edu/team/
+        status: 200
+        note: Named AI team — architect, developers, UX, product, training, director.
+      - url: https://zotgpt.uci.edu/help/
+        status: 200
+        note: zotgpt-support@uci.edu and oit-ai@uci.edu. No status page.
+      - url: https://portal.azureapi.zotgpt.uci.edu
+        status: 200
+        note: >-
+          Azure API Management developer portal, titled "UC Irvine API
+          Management". /apis and /products routes present; API definitions gated
+          behind sign-in.
+      - url: https://portal.azureapi.zotgpt.uci.edu/apis
+        status: 200
+        note: APIs listing page; requires sign-in to reveal definitions.
+      - url: https://oit-apim-usw2.azure-api.net/
+        status: 404
+        note: >-
+          Live Azure API Management gateway — returns the APIM JSON envelope
+          {"statusCode":404,"message":"Resource not found"}, confirming the
+          instance exists.
+      - url: https://chat.zotgpt.uci.edu/
+        status: 302
+        note: >-
+          Redirects to https://shib.service.uci.edu/idp/profile/SAML2/Redirect/SSO
+          — campus Shibboleth SSO confirmed.
+      - url: https://shib.service.uci.edu/idp/shibboleth
+        status: 200
+        note: >-
+          Campus IdP SAML metadata, application/xml. The only anonymously
+          retrievable machine-readable descriptor in the estate.
+      - url: https://api.zotgpt.uci.edu/v1/chat/completions
+        status: 0
+        note: >-
+          Documented data-plane endpoint. NXDOMAIN from the public internet —
+          campus-internal or already withdrawn under the deprecation.
+      - url: https://api.azureapi.zotgpt.uci.edu/v1
+        status: 0
+        note: Old base URL from the migration guide. NXDOMAIN publicly.
+      - url: https://zotgpt.uci.edu/.well-known/security.txt
+        status: 404
+        note: No security.txt on any ZotGPT host.
+      - url: https://zotgpt.uci.edu/llms.txt
+        status: 404
+        note: No llms.txt published.
+      - url: https://zotgpt.uci.edu/.well-known/agent-card.json
+        status: 404
+        note: >-
+          No A2A agent card at either the canonical or the legacy path, on any
+          host. Nothing written to a2a/ — search only, never generated.
+      - url: https://zotgpt.uci.edu/robots.txt
+        status: 404
+        note: No robots.txt and no sitemap.xml.
+      - url: https://www.oit.uci.edu/services/ai/
+        status: 200
+        note: OIT AI service page; release notes are published here as dated posts.

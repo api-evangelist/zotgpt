@@ -1,0 +1,84 @@
+specification: API Commons FinOps
+specificationVersion: '0.1'
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+generated: '2026-07-28'
+method: searched
+source:
+  - https://zotgpt.uci.edu/services/gateway/
+  - https://zotgpt.uci.edu/services/api/
+  - https://zotgpt.uci.edu/sustainability/
+  - https://newuniversity.org/2026/03/24/zotgpt-how-uci-became-a-pioneer-of-on-campus-ai/
+created: '2026-07-28'
+modified: '2026-07-28'
+tags:
+  - FinOps
+  - Generative AI
+  - Chargeback
+  - Higher Education
+description: >-
+  ZotGPT is one of the clearest examples in the catalog of an API operated as a
+  cost-control instrument rather than a revenue instrument. The unit of account
+  is the dollar-denominated credit; the control surface is the gateway; the
+  chargeback path is the campus Kuali Financial System. Because the gateway
+  abstracts the upstream vendor, UCI can move spend between OpenAI, Anthropic on
+  AWS Bedrock, Google, and Azure without any campus client changing a line of
+  code — which turns model choice into a procurement lever instead of an
+  application rewrite.
+model: internal-utility-with-chargeback
+billing:
+  unit: USD credits drawn against token usage
+  granularity: per virtual key, per workspace
+  enforcement:
+    - per-key spend limits
+    - workspace budget enforcement
+    - affiliation-based tier entitlement
+    - KFS (Kuali Financial System) account validation for higher tiers
+  chargeback: >-
+    Standard and Advanced Research tiers validate a campus financial account, so
+    consumption lands on a departmental or grant fund.
+  free_allowances:
+    - tier: Gateway Free
+      amount: 50
+      note: '"$50 free credits for testing."'
+    - tier: API (deprecated)
+      amount: 200
+      note: '"$200 in initial API credits to get started."'
+cost_avoidance:
+  - claim: Per-student subscription avoidance
+    detail: >-
+      Thousands of UCI students were paying roughly $20/month for commercial AI
+      subscriptions. OIT estimates the value delivered to a student at about
+      $100/month, against premium commercial tiers running as high as $200/month.
+    source: https://newuniversity.org/2026/03/24/zotgpt-how-uci-became-a-pioneer-of-on-campus-ai/
+  - claim: Custom bot build avoidance
+    detail: >-
+      Since launch, UCI employees have built over 1,000 custom bots on ZotGPT
+      Creator, replacing third-party solutions reported at upwards of $10,000
+      each.
+    source: https://www.oit.uci.edu/2025/11/18/anteaterintelligence-how-zotgpt-creator-is-transforming-uci-websites/
+optimization_levers:
+  - name: Multi-model routing
+    detail: >-
+      One endpoint fronting many models means the cheapest adequate model can
+      serve a workload without the caller knowing or caring.
+  - name: Multi-cloud placement
+    detail: >-
+      Models are sourced across three cloud vendors, so commercial terms at one
+      vendor do not dictate the campus cost floor.
+  - name: Sustainability steering
+    detail: >-
+      UCI explicitly frames multi-cloud as a sustainability choice: "ZotGPT
+      provides access to many models spread across three different cloud vendors
+      ... This flexibility allows you to choose a model or cloud vendor that has
+      the strongest sustainability commitment."
+    source: https://zotgpt.uci.edu/sustainability/
+gaps:
+  - No published per-token or per-model rate card, so a caller cannot forecast
+    spend before running a workload.
+  - No published usage/cost API or exportable billing artifact — budget state is
+    visible in the portal, not addressable programmatically.
+  - No published showback reporting cadence for departments.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,280 @@
+openapi: 3.1.0
+info:
+  title: ZotGPT Gateway
+  version: '1.0'
+  summary: UC Irvine's unified AI API gateway, on the Portkey API specification.
+  description: |
+    A faithful, documentation-derived contract for the surface UC Irvine
+    publishes for the ZotGPT Gateway.
+
+    PROVENANCE: UC Irvine does not publish a machine-readable OpenAPI for the
+    Gateway. This document was GENERATED from the operations, base URLs, headers,
+    provider aliases, and model slugs named verbatim on
+    https://zotgpt.uci.edu/services/gateway/ and
+    https://zotgpt.uci.edu/services/gateway/clients/. Only surfaces UCI names in
+    its own documentation are included. Request/response schemas follow the
+    Portkey / OpenAI-compatible shapes that UCI points clients at; they are
+    intentionally permissive rather than exhaustively enumerated, because UCI
+    publishes no field-level reference of its own.
+
+    NOT A UCI-OWNED HOST: the documented data plane is Portkey's multi-tenant
+    host. UCI tenancy is asserted by the workspace virtual key and the
+    x-portkey-provider alias, both minted behind UCInetID.
+  contact:
+    name: UCI OIT AI Team
+    email: oit-ai@uci.edu
+    url: https://zotgpt.uci.edu/help/
+  x-provenance:
+    generated: '2026-07-28'
+    method: generated
+    source:
+      - https://zotgpt.uci.edu/services/gateway/
+      - https://zotgpt.uci.edu/services/gateway/clients/
+      - https://zotgpt.uci.edu/services/migrate-azure-api/
+    upstream-spec: https://portkey.ai/docs/introduction/what-is-portkey
+    note: >-
+      No anonymous OpenAPI/Swagger was retrievable from any ZotGPT host. Probes
+      for /openapi.json, /openapi.yaml, /swagger.json, /api-docs, /docs and
+      /v1/models against api.zotgpt.uci.edu all failed at DNS resolution; the
+      Azure API Management developer portal at portal.azureapi.zotgpt.uci.edu
+      returned 200 but gates its API definitions behind sign-in.
+servers:
+  - url: https://api.portkey.ai/v1
+    description: OpenAI-compatible base URL, as documented for ZotGPT Gateway clients.
+  - url: https://api.portkey.ai
+    description: Anthropic-style base URL, as documented for ZotGPT Gateway clients.
+tags:
+  - name: Chat
+    description: Chat completions across the campus model catalog.
+  - name: Embeddings
+    description: Vector embeddings across the campus model catalog.
+security:
+  - virtualKey: []
+paths:
+  /chat/completions:
+    post:
+      tags: [ Chat ]
+      operationId: createChatCompletion
+      summary: Create a chat completion
+      description: >-
+        Send a chat completion request to any model in the ZotGPT campus Model
+        Catalog. The model is selected by slug; the upstream provider is selected
+        by the x-portkey-provider header carrying a UCI provider alias. Streaming
+        responses are supported.
+      parameters:
+        - $ref: '#/components/parameters/PortkeyProvider'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              claudeOnBedrock:
+                summary: Claude Opus on AWS Bedrock via the campus alias
+                value:
+                  model: '@zotgpt-api-bedrock/us.anthropic.claude-opus-4-7'
+                  messages:
+                    - role: user
+                      content: Summarize this syllabus in five bullets.
+              openaiProd:
+                summary: An OpenAI model via the campus alias
+                value:
+                  model: '@openai-prod/gpt-5.5'
+                  messages:
+                    - role: user
+                      content: Draft a rubric for a first-year writing assignment.
+                  stream: true
+      responses:
+        '200':
+          description: A chat completion, or a Server-Sent Events stream when stream is true.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+            text/event-stream:
+              schema:
+                type: string
+                description: SSE stream of chat completion chunks.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/BudgetOrRateLimited'
+  /embeddings:
+    post:
+      tags: [ Embeddings ]
+      operationId: createEmbedding
+      summary: Create embeddings
+      description: >-
+        Create vector embeddings for input text using an embeddings model from
+        the ZotGPT campus Model Catalog.
+      parameters:
+        - $ref: '#/components/parameters/PortkeyProvider'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddingRequest'
+      responses:
+        '200':
+          description: Embedding vectors.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbeddingResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/BudgetOrRateLimited'
+components:
+  securitySchemes:
+    virtualKey:
+      type: apiKey
+      in: header
+      name: x-portkey-api-key
+      description: >-
+        A workspace virtual API key minted by the user in the ZotGPT Gateway
+        portal after signing in with UCInetID. UCI documents it as "treat as a
+        password." Bearer-scheme presentation is documented for Anthropic-style
+        clients such as Claude Desktop.
+  parameters:
+    PortkeyProvider:
+      name: x-portkey-provider
+      in: header
+      required: false
+      description: >-
+        The UCI provider alias to route to, for example "@zotgpt-api-bedrock" or
+        "@openai-prod". May also be carried as a prefix on the model slug.
+      schema:
+        type: string
+        examples:
+          - '@zotgpt-api-bedrock'
+          - '@openai-prod'
+  responses:
+    Unauthorized:
+      description: Missing, revoked, or non-UCI virtual key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BudgetOrRateLimited:
+      description: >-
+        Request rejected by rate limiting or by the per-key spend limit /
+        workspace budget enforcement UCI applies to virtual keys.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    ChatCompletionRequest:
+      type: object
+      required: [ model, messages ]
+      properties:
+        model:
+          type: string
+          description: >-
+            A model slug from the ZotGPT campus Model Catalog, optionally
+            prefixed with a UCI provider alias.
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        stream:
+          type: boolean
+          default: false
+        temperature:
+          type: number
+        max_tokens:
+          type: integer
+      additionalProperties: true
+    Message:
+      type: object
+      required: [ role, content ]
+      properties:
+        role:
+          type: string
+          enum: [ system, user, assistant ]
+        content:
+          type: string
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/Message'
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/Usage'
+      additionalProperties: true
+    EmbeddingRequest:
+      type: object
+      required: [ model, input ]
+      properties:
+        model:
+          type: string
+        input:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+      additionalProperties: true
+    EmbeddingResponse:
+      type: object
+      properties:
+        object:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              embedding:
+                type: array
+                items:
+                  type: number
+        model:
+          type: string
+        usage:
+          $ref: '#/components/schemas/Usage'
+      additionalProperties: true
+    Usage:
+      type: object
+      description: Token accounting, which is what the campus budget tiers are drawn against.
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string

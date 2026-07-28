@@ -1,0 +1,107 @@
+generated: '2026-07-28'
+method: searched
+source:
+  - https://zotgpt.uci.edu/services/migrate-azure-api/
+  - https://zotgpt.uci.edu/services/api/
+  - https://zotgpt.uci.edu/services/gateway/
+provider: ZotGPT (UC Irvine)
+providerId: zotgpt
+description: >-
+  ZotGPT has done something most API providers never manage: it published a
+  real, phased, written deprecation plan for its first-generation API before
+  switching it off, with a named replacement, a code-level migration guide
+  showing before-and-after, and an explicit statement that old keys stop working.
+  That is a stronger operational posture than most commercial API providers in
+  this catalog.
+tags:
+  - Lifecycle
+  - Deprecation
+  - Migration
+  - Versioning
+versioning:
+  scheme: path
+  current: /v1
+  notes: >-
+    Both generations expose /v1. UCI states that in the migration "model names
+    and request structures remain unchanged" — the break is the host and the
+    credential, not the contract shape.
+deprecation:
+  policy_published: true
+  policy_url: https://zotgpt.uci.edu/services/migrate-azure-api/
+  deprecated_api: ZotGPT API (Azure-managed)
+  deprecated_base_urls:
+    - https://api.zotgpt.uci.edu/v1
+    - https://api.azureapi.zotgpt.uci.edu/v1
+  replacement: ZotGPT Gateway
+  replacement_base_url: https://api.portkey.ai/v1
+  phases:
+    - phase: 1
+      window: Days 1–30
+      detail: New signups frozen; existing users notified.
+    - phase: 2
+      window: Months 1–3
+      detail: Self-migration period with support available.
+    - phase: 3
+      window: End of month 3
+      detail: '"All remaining Azure API keys disabled."'
+  migration_guide:
+    before: |
+      client = OpenAI(
+          api_key="YOUR_AZURE_API_KEY",
+          base_url="https://api.azureapi.zotgpt.uci.edu/v1"
+      )
+    after: |
+      client = OpenAI(
+          api_key="YOUR_VIRTUAL_KEY",
+          base_url="https://app.portkey.ai/v1"
+      )
+    notes: >-
+      The service page for clients documents https://api.portkey.ai/v1 as the
+      OpenAI-compatible base URL and https://api.portkey.ai for Anthropic-style
+      clients; the migration page quotes https://app.portkey.ai/v1. Both appear
+      in UCI's own documentation and are recorded here as published, without
+      being reconciled on UCI's behalf.
+  gain: >-
+    Migrating trades a single-vendor gpt-4o deployment for "Gemini, Claude, and
+    more" through the same request shape.
+status_page:
+  published: false
+  notes: >-
+    No status.zotgpt.uci.edu or equivalent was found. Incident communication
+    appears to run through OIT channels rather than a dedicated status endpoint.
+  probed:
+    - https://zotgpt.uci.edu/help/
+support:
+  bug_reports_and_features: zotgpt-support@uci.edu
+  department_integration: oit-ai@uci.edu
+  service_request: https://uci.service-now.com/sp?id=kb_article_view&sysparm_article=KB0013367
+milestones:
+  - date: '2023-11'
+    event: ZotGPT work begins with data protection as the founding constraint.
+  - date: '2024-01'
+    event: ZotGPT Chat launches to faculty and staff.
+  - date: '2024-04'
+    event: ZotGPT Chat opens to students.
+  - date: '2025-09-23'
+    event: >-
+      Model catalog widens materially — Claude Opus 4.1, Gemini 2.5 Pro,
+      DeepSeek-R1, GPT-5 added.
+  - date: '2025-11-18'
+    event: >-
+      Creator adoption reported at over 1,000 custom bots built by UCI employees.
+  - date: '2026-04-16'
+    event: >-
+      Spring 2026 release — GPT-5.4, Moonshot Kimi K2.5, Claude 4.6; Creator
+      Agents; multi-media in Chat; P3 protection across all models.
+  - date: '2026'
+    event: >-
+      ZotGPT Gateway introduced as the unified AI API gateway; Azure API entered
+      phased deprecation.
+gaps:
+  - No public status page or uptime history.
+  - No dated, machine-readable changelog endpoint — release notes are blog posts.
+  - No published SLA or support-response target.
+  - No Sunset/Deprecation HTTP headers observable (data plane not publicly reachable).
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

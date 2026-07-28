@@ -1,0 +1,185 @@
+openapi: 3.1.0
+info:
+  title: ZotGPT API (Deprecated)
+  version: '1.0'
+  summary: >-
+    UC Irvine's first-generation, Azure API Management-fronted, OpenAI-compatible
+    chat completions API. Deprecated in favor of the ZotGPT Gateway.
+  description: |
+    A faithful, documentation-derived contract for the single operation UC Irvine
+    published for its first-generation developer API.
+
+    PROVENANCE: GENERATED from https://zotgpt.uci.edu/services/api/ and
+    https://zotgpt.uci.edu/services/migrate-azure-api/, which name the endpoint,
+    the bearer-token auth, the model, and the base URLs verbatim. No
+    machine-readable spec was retrievable — the Azure API Management developer
+    portal at portal.azureapi.zotgpt.uci.edu gates its API definitions behind
+    sign-in, and neither api.zotgpt.uci.edu nor api.azureapi.zotgpt.uci.edu
+    resolves in public DNS.
+
+    DEPRECATED: UCI has published a three-phase retirement — new signups frozen,
+    a three-month self-migration window, then "all remaining Azure API keys
+    disabled." See lifecycle/zotgpt-lifecycle.yml.
+  contact:
+    name: UCI OIT AI Team
+    email: oit-ai@uci.edu
+    url: https://zotgpt.uci.edu/help/
+  x-provenance:
+    generated: '2026-07-28'
+    method: generated
+    source:
+      - https://zotgpt.uci.edu/services/api/
+      - https://zotgpt.uci.edu/services/migrate-azure-api/
+    note: >-
+      Endpoint hosts did not resolve from outside the campus network at time of
+      capture (NXDOMAIN). Documented surface recorded; no live call was made and
+      none is claimed.
+  x-lifecycle:
+    status: deprecated
+    replaced-by: openapi/zotgpt-gateway-openapi.yml
+    replacement-docs: https://zotgpt.uci.edu/services/migrate-azure-api/
+servers:
+  - url: https://api.zotgpt.uci.edu/v1
+    description: >-
+      Base URL published on the ZotGPT API service page. Did not resolve in
+      public DNS on 2026-07-28.
+    x-resolves-publicly: false
+  - url: https://api.azureapi.zotgpt.uci.edu/v1
+    description: >-
+      Base URL quoted in the migration guide as the "old" Azure API endpoint.
+      Did not resolve in public DNS on 2026-07-28.
+    x-resolves-publicly: false
+tags:
+  - name: Chat
+    description: OpenAI-compatible chat completions.
+security:
+  - bearerAuth: []
+paths:
+  /chat/completions:
+    post:
+      tags: [ Chat ]
+      operationId: createChatCompletionLegacy
+      summary: Create a chat completion (deprecated)
+      deprecated: true
+      description: >-
+        OpenAI-compatible chat completion against the campus-hosted gpt-4o
+        deployment, fronted by Azure API Management. Available to UCI faculty and
+        staff after an approved ServiceNow request, with $200 in initial API
+        credits. Retired in favor of the ZotGPT Gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              documented:
+                summary: The model named on the service page
+                value:
+                  model: gpt-4o
+                  messages:
+                    - role: user
+                      content: Explain retrieval augmented generation to a first-year student.
+      responses:
+        '200':
+          description: A chat completion.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+        '401':
+          description: Missing or invalid bearer token, or a key disabled by the migration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limited or out of credit by Azure API Management policy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        API key issued through the Azure API Management developer portal at
+        portal.azureapi.zotgpt.uci.edu, presented in the Authorization header.
+  schemas:
+    ChatCompletionRequest:
+      type: object
+      required: [ model, messages ]
+      properties:
+        model:
+          type: string
+          description: >-
+            gpt-4o was the only model named as available on the service page,
+            with "additional models coming soon."
+          examples:
+            - gpt-4o
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        stream:
+          type: boolean
+        temperature:
+          type: number
+        max_tokens:
+          type: integer
+      additionalProperties: true
+    Message:
+      type: object
+      required: [ role, content ]
+      properties:
+        role:
+          type: string
+          enum: [ system, user, assistant ]
+        content:
+          type: string
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/Message'
+              finish_reason:
+                type: string
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+      additionalProperties: true
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
