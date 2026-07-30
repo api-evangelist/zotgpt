@@ -57,110 +57,62 @@ created: '2026-07-28'
 modified: '2026-07-28'
 specificationVersion: '0.21'
 apis:
-  - aid: zotgpt:gateway
-    name: ZotGPT Gateway
-    description: >-
-      The ZotGPT Gateway is UC Irvine's unified AI API gateway and the
-      designated successor to the deprecated Azure-managed API. It exposes "a
-      growing catalog of AI models from a single endpoint" spanning OpenAI,
-      Anthropic on AWS Bedrock, Google, and Azure, and it leverages the Portkey
-      API specification so existing OpenAI- or Anthropic-shaped client code
-      migrates "with just a few changes and a new API key." Access is through
-      UCInetID sign-in at the gateway portal, where a user mints virtual API
-      keys scoped to a workspace with per-key budget enforcement. Documented
-      surfaces are chat completions, embeddings, and streaming responses.
-      Provider routing is selected with an `x-portkey-provider` header carrying
-      a UCI provider alias such as `@zotgpt-api-bedrock` or `@openai-prod`, and
-      the model slug comes from the campus Model Catalog.
-    humanURL: https://zotgpt.uci.edu/services/gateway/
-    baseURL: https://api.portkey.ai/v1
-    tags: [ AI Gateway, LLM, Chat Completions, Embeddings, Model Routing, Multi-Model ]
-    properties:
-      - type: Documentation
-        url: https://zotgpt.uci.edu/services/gateway/
-      - type: GettingStarted
-        url: https://zotgpt.uci.edu/services/gateway/clients/
-      - type: OpenAPI
-        url: openapi/zotgpt-gateway-openapi.yml
-      - type: Authentication
-        url: authentication/zotgpt-authentication.yml
-      - type: SignUp
-        url: https://app.portkey.ai
-      - type: Examples
-        url: examples/zotgpt-gateway-examples.yml
-      - type: SDKs
-        url: packages/zotgpt-packages.yml
-      - type: Specification
-        url: https://portkey.ai/docs/introduction/what-is-portkey
-    x-evidence:
-      verified: '2026-07-28'
-      method: docs-read + host-probe
-      docs: >-
-        https://zotgpt.uci.edu/services/gateway/ and
-        https://zotgpt.uci.edu/services/gateway/clients/ document the base URLs
-        (https://api.portkey.ai for Anthropic-style clients,
-        https://api.portkey.ai/v1 for OpenAI-compatible clients), the virtual
-        API key auth model, the x-portkey-provider header, named provider
-        aliases (@zotgpt-api-bedrock, @openai-prod), a concrete model slug
-        (@zotgpt-api-bedrock/us.anthropic.claude-opus-4-7), and the supported
-        operations (chat completions, embeddings, streaming).
-      endpoint_check: >-
-        The data plane is Portkey's multi-tenant host, not a UCI-owned host;
-        UCI-specific routing is asserted only via workspace virtual keys, which
-        require UCInetID. No unauthenticated call was made. The UCI provider
-        aliases and model slugs are quoted from UCI's own documentation, not
-        inferred.
-  - aid: zotgpt:api
-    name: ZotGPT API (Deprecated)
-    description: >-
-      The first-generation ZotGPT developer API, an OpenAI-compatible chat
-      completions endpoint fronted by Azure API Management and available to UCI
-      faculty and staff with "$200 in initial API credits to get started."
-      Documented as a bearer-token POST to
-      https://api.zotgpt.uci.edu/v1/chat/completions serving gpt-4o. Access was
-      requested through a ServiceNow knowledge article and keys were managed in
-      the Azure API Management developer portal at
-      portal.azureapi.zotgpt.uci.edu. UCI has published a three-phase
-      deprecation: new signups frozen, a three-month self-migration window, and
-      then "all remaining Azure API keys disabled." Superseded by the ZotGPT
-      Gateway.
-    humanURL: https://zotgpt.uci.edu/services/api/
-    baseURL: https://api.zotgpt.uci.edu/v1
-    tags: [ LLM, Chat Completions, Deprecated, Azure API Management, OpenAI Compatible ]
-    properties:
-      - type: Documentation
-        url: https://zotgpt.uci.edu/services/api/
-      - type: DeveloperPortal
-        url: https://portal.azureapi.zotgpt.uci.edu
-      - type: OpenAPI
-        url: openapi/zotgpt-api-openapi.yml
-      - type: Deprecation
-        url: https://zotgpt.uci.edu/services/migrate-azure-api/
-      - type: SignUp
-        url: https://uci.service-now.com/sp?id=kb_article_view&sysparm_article=KB0013367
-      - type: Authentication
-        url: authentication/zotgpt-authentication.yml
-    x-evidence:
-      verified: '2026-07-28'
-      method: docs-read + dns + host-probe
-      docs: >-
-        https://zotgpt.uci.edu/services/api/ names the endpoint
-        https://api.zotgpt.uci.edu/v1/chat/completions, bearer-token auth, the
-        gpt-4o model, the $200 credit, and the ServiceNow request path.
-        https://zotgpt.uci.edu/services/migrate-azure-api/ quotes the old base
-        URL https://api.azureapi.zotgpt.uci.edu/v1 alongside Python client code.
-      endpoint_check: >-
-        api.zotgpt.uci.edu and api.azureapi.zotgpt.uci.edu do NOT resolve in
-        public DNS (NXDOMAIN, curl exit 6) — the data plane is reachable only
-        from inside the campus network or is already withdrawn as part of the
-        deprecation. The control plane IS public: the Azure API Management
-        developer portal at https://portal.azureapi.zotgpt.uci.edu returns HTTP
-        200 titled "UC Irvine API Management" with /apis and /products routes,
-        and resolves through oit-apim-usw2.azure-api.net. The underlying APIM
-        gateway oit-apim-usw2.azure-api.net answers with an APIM JSON envelope
-        ({"statusCode":404,"message":"Resource not found"}), confirming a live
-        Azure API Management instance. No OpenAPI was retrievable anonymously —
-        the portal gates specs behind sign-in.
+- aid: zotgpt:api
+  name: ZotGPT API (Deprecated)
+  description: >-
+    The first-generation ZotGPT developer API, an OpenAI-compatible chat completions endpoint fronted
+    by Azure API Management and available to UCI faculty and staff with "$200 in initial API credits to
+    get started." Documented as a bearer-token POST to https://api.zotgpt.uci.edu/v1/chat/completions
+    serving gpt-4o. Access was requested through a ServiceNow knowledge article and keys were managed
+    in the Azure API Management developer portal at portal.azureapi.zotgpt.uci.edu. UCI has published
+    a three-phase deprecation: new signups frozen, a three-month self-migration window, and then "all
+    remaining Azure API keys disabled." Superseded by the ZotGPT Gateway.
+  humanURL: https://zotgpt.uci.edu/services/api/
+  baseURL: https://api.zotgpt.uci.edu/v1
+  tags:
+  - LLM
+  - Chat Completions
+  - Deprecated
+  - Azure API Management
+  - OpenAI Compatible
+  properties:
+  - type: Documentation
+    url: https://zotgpt.uci.edu/services/api/
+  - type: DeveloperPortal
+    url: https://portal.azureapi.zotgpt.uci.edu
+  - type: OpenAPI
+    url: openapi/zotgpt-api-openapi.yml
+  - type: Deprecation
+    url: https://zotgpt.uci.edu/services/migrate-azure-api/
+  - type: SignUp
+    url: https://uci.service-now.com/sp?id=kb_article_view&sysparm_article=KB0013367
+  - type: Authentication
+    url: authentication/zotgpt-authentication.yml
+  x-evidence:
+    verified: '2026-07-28'
+    method: docs-read + dns + host-probe
+    docs: >-
+      https://zotgpt.uci.edu/services/api/ names the endpoint https://api.zotgpt.uci.edu/v1/chat/completions,
+      bearer-token auth, the gpt-4o model, the $200 credit, and the ServiceNow request path. https://zotgpt.uci.edu/services/migrate-azure-api/
+      quotes the old base URL https://api.azureapi.zotgpt.uci.edu/v1 alongside Python client code.
+    endpoint_check: >-
+      api.zotgpt.uci.edu and api.azureapi.zotgpt.uci.edu do NOT resolve in public DNS (NXDOMAIN, curl
+      exit 6) — the data plane is reachable only from inside the campus network or is already withdrawn
+      as part of the deprecation. The control plane IS public: the Azure API Management developer portal
+      at https://portal.azureapi.zotgpt.uci.edu returns HTTP 200 titled "UC Irvine API Management" with
+      /apis and /products routes, and resolves through oit-apim-usw2.azure-api.net. The underlying APIM
+      gateway oit-apim-usw2.azure-api.net answers with an APIM JSON envelope ({"statusCode":404,"message":"Resource
+      not found"}), confirming a live Azure API Management instance. No OpenAPI was retrievable anonymously
+      — the portal gates specs behind sign-in.
+- aid: zotgpt:zotgpt-gateway-openapi
+  name: ZotGPT (UC Irvine) ZotGPT Gateway
+  description: >-
+    ZotGPT (UC Irvine) ZotGPT Gateway from ZotGPT (UC Irvine) — 2 path(s) described in OpenAPI.
+  humanURL: https://zotgpt.uci.edu/services/api/
+  baseURL: https://api.zotgpt.uci.edu/v1
+  properties:
+  - type: OpenAPI
+    url: openapi/zotgpt-gateway-openapi.yml
 common:
   - type: Website
     url: https://zotgpt.uci.edu/
