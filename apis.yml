@@ -55,7 +55,7 @@ tags:
   - California
 created: '2026-07-28'
 modified: '2026-07-28'
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 apis:
 - aid: zotgpt:api
   name: ZotGPT API (Deprecated)
