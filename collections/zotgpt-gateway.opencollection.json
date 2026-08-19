@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ZotGPT Gateway",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-portkey-api-key",
+      "value": "{{x-portkey-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a chat completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.portkey.ai/v1/chat/completions",
+            "headers": [
+              {
+                "name": "x-portkey-provider",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a chat completion request to any model in the ZotGPT campus Model Catalog. The model is selected by slug; the upstream provider is selected by the x-portkey-provider header carrying a UCI provider alias. Streaming responses are supported."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Embeddings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create embeddings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.portkey.ai/v1/embeddings",
+            "headers": [
+              {
+                "name": "x-portkey-provider",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create vector embeddings for input text using an embeddings model from the ZotGPT campus Model Catalog."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

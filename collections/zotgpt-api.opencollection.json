@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "ZotGPT API (Deprecated)",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a chat completion (deprecated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.zotgpt.uci.edu/v1/chat/completions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OpenAI-compatible chat completion against the campus-hosted gpt-4o deployment, fronted by Azure API Management. Available to UCI faculty and staff after an approved ServiceNow request, with $200 in initial API credits. Retired in favor of the ZotGPT Gateway."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

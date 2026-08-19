@@ -1,0 +1,246 @@
+{
+  "item": [
+    {
+      "id": "a09a526a-8a80-48e9-9789-37ae7dfe8d34",
+      "name": "Chat",
+      "description": {
+        "content": "OpenAI-compatible chat completions.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d99aeff1-0154-4cf7-9ce3-172ddc820c5a",
+          "name": "Create a chat completion (deprecated)",
+          "request": {
+            "name": "Create a chat completion (deprecated)",
+            "description": {
+              "content": "OpenAI-compatible chat completion against the campus-hosted gpt-4o deployment, fronted by Azure API Management. Available to UCI faculty and staff after an approved ServiceNow request, with $200 in initial API credits. Retired in favor of the ZotGPT Gateway.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chat",
+                "completions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"stream\": \"<boolean>\",\n  \"temperature\": \"<number>\",\n  \"max_tokens\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "92fd5d9b-a576-4cc0-996a-8ae7cd9d65e0",
+              "name": "A chat completion.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chat",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"gpt-4o\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Explain retrieval augmented generation to a first-year student.\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"object\": \"string\",\n  \"created\": 5190,\n  \"model\": \"string\",\n  \"choices\": [\n    {\n      \"index\": 3618,\n      \"message\": {\n        \"role\": \"user\",\n        \"content\": \"string\"\n      },\n      \"finish_reason\": \"string\"\n    },\n    {\n      \"index\": 6076,\n      \"message\": {\n        \"role\": \"system\",\n        \"content\": \"string\"\n      },\n      \"finish_reason\": \"string\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 4316,\n    \"completion_tokens\": 7038,\n    \"total_tokens\": 1871\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a61a39e3-6bec-43dc-a5d4-267a66782864",
+              "name": "Missing or invalid bearer token, or a key disabled by the migration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chat",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"gpt-4o\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Explain retrieval augmented generation to a first-year student.\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d24d9f47-6375-41d6-ba79-bf29497e8e77",
+              "name": "Rate limited or out of credit by Azure API Management policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chat",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"gpt-4o\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Explain retrieval augmented generation to a first-year student.\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"string\",\n    \"type\": \"string\",\n    \"code\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.zotgpt.uci.edu/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8c67f95c-d5bc-4705-b347-a734019211d5",
+    "name": "ZotGPT API (Deprecated)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A faithful, documentation-derived contract for the single operation UC Irvine\npublished for its first-generation developer API.\n\nPROVENANCE: GENERATED from https://zotgpt.uci.edu/services/api/ and\nhttps://zotgpt.uci.edu/services/migrate-azure-api/, which name the endpoint,\nthe bearer-token auth, the model, and the base URLs verbatim. No\nmachine-readable spec was retrievable — the Azure API Management developer\nportal at portal.azureapi.zotgpt.uci.edu gates its API definitions behind\nsign-in, and neither api.zotgpt.uci.edu nor api.azureapi.zotgpt.uci.edu\nresolves in public DNS.\n\nDEPRECATED: UCI has published a three-phase retirement — new signups frozen,\na three-month self-migration window, then \"all remaining Azure API keys\ndisabled.\" See lifecycle/zotgpt-lifecycle.yml.\n\n\nContact Support:\n Name: UCI OIT AI Team\n Email: oit-ai@uci.edu",
+      "type": "text/plain"
+    }
+  }
+}
