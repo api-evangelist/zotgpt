@@ -74,6 +74,12 @@ apis:
   - Chat Completions
   - Deprecated
   - Azure API Management
+  - OpenAI-Compatible
+  tags_raw:
+  - LLM
+  - Chat Completions
+  - Deprecated
+  - Azure API Management
   - OpenAI Compatible
   properties:
   - type: Documentation
