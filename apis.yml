@@ -57,68 +57,46 @@ created: '2026-07-28'
 modified: '2026-07-28'
 specificationVersion: '0.23'
 apis:
-- aid: zotgpt:api
-  name: ZotGPT API (Deprecated)
-  description: >-
-    The first-generation ZotGPT developer API, an OpenAI-compatible chat completions endpoint fronted
-    by Azure API Management and available to UCI faculty and staff with "$200 in initial API credits to
-    get started." Documented as a bearer-token POST to https://api.zotgpt.uci.edu/v1/chat/completions
-    serving gpt-4o. Access was requested through a ServiceNow knowledge article and keys were managed
-    in the Azure API Management developer portal at portal.azureapi.zotgpt.uci.edu. UCI has published
-    a three-phase deprecation: new signups frozen, a three-month self-migration window, and then "all
-    remaining Azure API keys disabled." Superseded by the ZotGPT Gateway.
+- aid: zotgpt:zotgpt-chat-api
+  name: ZotGPT (UC Irvine) Chat API
+  description: OpenAI-compatible chat completions.
   humanURL: https://zotgpt.uci.edu/services/api/
   baseURL: https://api.zotgpt.uci.edu/v1
   tags:
-  - LLM
-  - Chat Completions
-  - Deprecated
-  - Azure API Management
-  - OpenAI-Compatible
-  tags_raw:
-  - LLM
-  - Chat Completions
-  - Deprecated
-  - Azure API Management
-  - OpenAI Compatible
+  - Chat
   properties:
+  - type: OpenAPI
+    url: openapi/zotgpt-chat-api-openapi.yml
   - type: Documentation
     url: https://zotgpt.uci.edu/services/api/
   - type: DeveloperPortal
     url: https://portal.azureapi.zotgpt.uci.edu
-  - type: OpenAPI
-    url: openapi/zotgpt-api-openapi.yml
   - type: Deprecation
     url: https://zotgpt.uci.edu/services/migrate-azure-api/
   - type: SignUp
     url: https://uci.service-now.com/sp?id=kb_article_view&sysparm_article=KB0013367
   - type: Authentication
     url: authentication/zotgpt-authentication.yml
-  x-evidence:
-    verified: '2026-07-28'
-    method: docs-read + dns + host-probe
-    docs: >-
-      https://zotgpt.uci.edu/services/api/ names the endpoint https://api.zotgpt.uci.edu/v1/chat/completions,
-      bearer-token auth, the gpt-4o model, the $200 credit, and the ServiceNow request path. https://zotgpt.uci.edu/services/migrate-azure-api/
-      quotes the old base URL https://api.azureapi.zotgpt.uci.edu/v1 alongside Python client code.
-    endpoint_check: >-
-      api.zotgpt.uci.edu and api.azureapi.zotgpt.uci.edu do NOT resolve in public DNS (NXDOMAIN, curl
-      exit 6) — the data plane is reachable only from inside the campus network or is already withdrawn
-      as part of the deprecation. The control plane IS public: the Azure API Management developer portal
-      at https://portal.azureapi.zotgpt.uci.edu returns HTTP 200 titled "UC Irvine API Management" with
-      /apis and /products routes, and resolves through oit-apim-usw2.azure-api.net. The underlying APIM
-      gateway oit-apim-usw2.azure-api.net answers with an APIM JSON envelope ({"statusCode":404,"message":"Resource
-      not found"}), confirming a live Azure API Management instance. No OpenAPI was retrievable anonymously
-      — the portal gates specs behind sign-in.
-- aid: zotgpt:zotgpt-gateway-openapi
-  name: ZotGPT (UC Irvine) ZotGPT Gateway
-  description: >-
-    ZotGPT (UC Irvine) ZotGPT Gateway from ZotGPT (UC Irvine) — 2 path(s) described in OpenAPI.
+- aid: zotgpt:zotgpt-embeddings-api
+  name: ZotGPT (UC Irvine) Embeddings API
+  description: Vector embeddings across the campus model catalog.
   humanURL: https://zotgpt.uci.edu/services/api/
   baseURL: https://api.zotgpt.uci.edu/v1
+  tags:
+  - Embeddings
   properties:
   - type: OpenAPI
-    url: openapi/zotgpt-gateway-openapi.yml
+    url: openapi/zotgpt-embeddings-api-openapi.yml
+  - type: Documentation
+    url: https://zotgpt.uci.edu/services/api/
+  - type: DeveloperPortal
+    url: https://portal.azureapi.zotgpt.uci.edu
+  - type: Deprecation
+    url: https://zotgpt.uci.edu/services/migrate-azure-api/
+  - type: SignUp
+    url: https://uci.service-now.com/sp?id=kb_article_view&sysparm_article=KB0013367
+  - type: Authentication
+    url: authentication/zotgpt-authentication.yml
 common:
   - type: Website
     url: https://zotgpt.uci.edu/
