@@ -1,0 +1,252 @@
+openapi: 3.2.0
+info:
+  title: Zotgpt Chat API
+  version: '1.0'
+  contact:
+    name: UCI OIT AI Team
+    email: oit-ai@uci.edu
+    url: https://zotgpt.uci.edu/help/
+  x-refined-note:
+  - x-lifecycle differs across the merged source definitions and was not carried
+  - x-provenance differs across the merged source definitions and was not carried
+  description: 'Operations tagged Chat across 2 of this provider''s published API definitions: zotgpt-api-openapi.yml, zotgpt-gateway-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.zotgpt.uci.edu/v1
+  description: Base URL published on the ZotGPT API service page. Did not resolve in public DNS on 2026-07-28.
+  x-resolves-publicly: false
+- url: https://api.azureapi.zotgpt.uci.edu/v1
+  description: Base URL quoted in the migration guide as the "old" Azure API endpoint. Did not resolve in public DNS on 2026-07-28.
+  x-resolves-publicly: false
+- url: https://api.portkey.ai/v1
+  description: OpenAI-compatible base URL, as documented for ZotGPT Gateway clients.
+- url: https://api.portkey.ai
+  description: Anthropic-style base URL, as documented for ZotGPT Gateway clients.
+tags:
+- name: Chat
+  description: OpenAI-compatible chat completions.
+paths:
+  /chat/completions:
+    post:
+      tags:
+      - Chat
+      operationId: createChatCompletionLegacy
+      summary: Create a chat completion (deprecated)
+      deprecated: true
+      description: OpenAI-compatible chat completion against the campus-hosted gpt-4o deployment, fronted by Azure API Management. Available to UCI faculty and staff after an approved ServiceNow request, with $200 in initial API credits. Retired in favor of the ZotGPT Gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              documented:
+                summary: The model named on the service page
+                value:
+                  model: gpt-4o
+                  messages:
+                  - role: user
+                    content: Explain retrieval augmented generation to a first-year student.
+      responses:
+        '200':
+          description: A chat completion.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+        '401':
+          description: Missing or invalid bearer token, or a key disabled by the migration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limited or out of credit by Azure API Management policy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.zotgpt.uci.edu/v1
+      description: Base URL published on the ZotGPT API service page. Did not resolve in public DNS on 2026-07-28.
+      x-resolves-publicly: false
+    - url: https://api.azureapi.zotgpt.uci.edu/v1
+      description: Base URL quoted in the migration guide as the "old" Azure API endpoint. Did not resolve in public DNS on 2026-07-28.
+      x-resolves-publicly: false
+components:
+  schemas:
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/Message'
+              finish_reason:
+                type: string
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+      additionalProperties: true
+    Message:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - system
+          - user
+          - assistant
+        content:
+          type: string
+    ChatCompletionRequest:
+      type: object
+      required:
+      - model
+      - messages
+      properties:
+        model:
+          type: string
+          description: gpt-4o was the only model named as available on the service page, with "additional models coming soon."
+          examples:
+          - gpt-4o
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        stream:
+          type: boolean
+        temperature:
+          type: number
+        max_tokens:
+          type: integer
+      additionalProperties: true
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+    ChatCompletionRequest_2:
+      type: object
+      required:
+      - model
+      - messages
+      properties:
+        model:
+          type: string
+          description: A model slug from the ZotGPT campus Model Catalog, optionally prefixed with a UCI provider alias.
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        stream:
+          type: boolean
+          default: false
+        temperature:
+          type: number
+        max_tokens:
+          type: integer
+      additionalProperties: true
+    ChatCompletionResponse_2:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/Message'
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/Usage'
+      additionalProperties: true
+    Usage:
+      type: object
+      description: Token accounting, which is what the campus budget tiers are drawn against.
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+  parameters:
+    PortkeyProvider:
+      name: x-portkey-provider
+      in: header
+      required: false
+      description: The UCI provider alias to route to, for example "@zotgpt-api-bedrock" or "@openai-prod". May also be carried as a prefix on the model slug.
+      schema:
+        type: string
+        examples:
+        - '@zotgpt-api-bedrock'
+        - '@openai-prod'
+  responses:
+    BudgetOrRateLimited:
+      description: Request rejected by rate limiting or by the per-key spend limit / workspace budget enforcement UCI applies to virtual keys.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing, revoked, or non-UCI virtual key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key issued through the Azure API Management developer portal at portal.azureapi.zotgpt.uci.edu, presented in the Authorization header.
+    virtualKey:
+      type: apiKey
+      in: header
+      name: x-portkey-api-key
+      description: A workspace virtual API key minted by the user in the ZotGPT Gateway portal after signing in with UCInetID. UCI documents it as "treat as a password." Bearer-scheme presentation is documented for Anthropic-style clients such as Claude Desktop.
+x-refined-from:
+- zotgpt-api-openapi.yml
+- zotgpt-gateway-openapi.yml
