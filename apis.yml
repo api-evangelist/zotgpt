@@ -44,7 +44,7 @@ accessModel:
     - plans
   generated: '2026-07-28'
   method: searched
-position: Provider
+position: Producing
 access: 1st-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/zotgpt.png
 url: https://raw.githubusercontent.com/api-evangelist/zotgpt/refs/heads/main/apis.yml
