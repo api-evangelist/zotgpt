@@ -1,24 +1,17 @@
----
 aid: zotgpt
 name: ZotGPT (UC Irvine)
-description: >-
-  ZotGPT is the University of California, Irvine's institutionally-operated
-  generative AI platform, built and run in-house by the UCI Office of
-  Information Technology AI Team rather than purchased as a vendor seat.
-  Launched to faculty and staff in early 2024 and to students in April 2024,
-  it now spans four end-user products (Chat, ClassChat, Creator, Prompt
-  Library), a training arm (Academy), and two generations of developer API.
-  The platform is deliberately multi-cloud and multi-model: the interactive
-  applications run on UC Irvine's own AWS accounts in us-west-2 behind
-  Shibboleth SSO, the first-generation developer API was fronted by Azure API
-  Management, and models are sourced across OpenAI, Anthropic (via AWS
-  Bedrock), Google, Azure, and open-source options such as Mistral and
-  DeepSeek. The deprecated Azure-managed API at api.zotgpt.uci.edu is being
-  retired in favor of the ZotGPT Gateway, a Portkey-specification unified AI
-  gateway that gives the campus one endpoint, virtual API keys, per-key spend
-  limits, and provider-agnostic model routing. Data is held under UC Irvine's
-  P3 protection standard, retained 12 months, and contractually excluded from
-  vendor model training.
+description: 'ZotGPT is the University of California, Irvine''s institutionally-operated generative AI
+  platform, built and run in-house by the UCI Office of Information Technology AI Team rather than purchased
+  as a vendor seat. Launched to faculty and staff in early 2024 and to students in April 2024, it now
+  spans four end-user products (Chat, ClassChat, Creator, Prompt Library), a training arm (Academy), and
+  two generations of developer API. The platform is deliberately multi-cloud and multi-model: the interactive
+  applications run on UC Irvine''s own AWS accounts in us-west-2 behind Shibboleth SSO, the first-generation
+  developer API was fronted by Azure API Management, and models are sourced across OpenAI, Anthropic (via
+  AWS Bedrock), Google, Azure, and open-source options such as Mistral and DeepSeek. The deprecated Azure-managed
+  API at api.zotgpt.uci.edu is being retired in favor of the ZotGPT Gateway, a Portkey-specification unified
+  AI gateway that gives the campus one endpoint, virtual API keys, per-key spend limits, and provider-agnostic
+  model routing. Data is held under UC Irvine''s P3 protection standard, retained 12 months, and contractually
+  excluded from vendor model training.'
 type: Index
 deliveryModel:
   model: saas
@@ -41,7 +34,7 @@ accessModel:
   label: Free
   confidence: high
   source:
-    - plans
+  - plans
   generated: '2026-07-28'
   method: searched
 position: Producing
@@ -49,24 +42,25 @@ access: 1st-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/zotgpt.png
 url: https://raw.githubusercontent.com/api-evangelist/zotgpt/refs/heads/main/apis.yml
 tags:
-  - Artificial Intelligence
-  - Generative AI
-  - LLM
-  - AI Gateway
-  - Higher Education
-  - University
-  - Education
-  - Multi-Cloud
-  - Multi-Model
-  - Chat Completions
-  - Embeddings
-  - Model Routing
-  - Retrieval Augmented Generation
-  - Identity
-  - United States
-  - California
+- Artificial Intelligence
+- Generative AI
+- LLM
+- AI Gateway
+- Higher Education
+- University
+- Education
+- Multi-Cloud
+- Multi-Model
+- Chat Completions
+- Embeddings
+- Model Routing
+- Retrieval Augmented Generation
+- Identity
+- United States
+- California
+- Identity Federation
 created: '2026-07-28'
-modified: '2026-07-28'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 apis:
 - aid: zotgpt:zotgpt-chat-api
@@ -110,74 +104,74 @@ apis:
   - type: Authentication
     url: authentication/zotgpt-authentication.yml
 common:
-  - type: Website
-    url: https://zotgpt.uci.edu/
-  - type: DeveloperPortal
-    url: https://portal.azureapi.zotgpt.uci.edu
-  - type: Documentation
-    url: https://zotgpt.uci.edu/services/
-  - type: APIReference
-    url: https://zotgpt.uci.edu/services/gateway/
-  - type: GettingStarted
-    url: https://zotgpt.uci.edu/services/gateway/clients/
-  - type: Support
-    url: https://zotgpt.uci.edu/help/
-  - type: PrivacyPolicy
-    url: https://zotgpt.uci.edu/privacy/
-  - type: Organization
-    url: https://oit.uci.edu
-  - type: Team
-    url: https://zotgpt.uci.edu/team/
-  - type: Partners
-    url: https://zotgpt.uci.edu/partners/
-  - type: Sustainability
-    url: https://zotgpt.uci.edu/sustainability/
-  - type: Training
-    url: https://zotgpt.uci.edu/services/academy/
-  - type: Prompts
-    url: https://zotgpt.uci.edu/prompts/
-  - type: Marketplace
-    url: https://zotgpt.uci.edu/services/marketplace/
-  - type: Blog
-    url: https://www.oit.uci.edu/services/ai/
-  - type: Authentication
-    url: authentication/zotgpt-authentication.yml
-  - type: Conventions
-    url: conventions/zotgpt-conventions.yml
-  - type: Plans
-    url: plans/zotgpt-plans-pricing.yml
-  - type: Pricing
-    url: https://zotgpt.uci.edu/services/gateway/
-  - type: RateLimits
-    url: rate-limits/zotgpt-rate-limits.yml
-  - type: FinOps
-    url: finops/zotgpt-finops.yml
-  - type: Lifecycle
-    url: lifecycle/zotgpt-lifecycle.yml
-  - type: Deprecation
-    url: lifecycle/zotgpt-lifecycle.yml
-  - type: ChangeLog
-    url: changelog/zotgpt-changelog.yml
-  - type: Packages
-    url: packages/zotgpt-packages.yml
-  - type: SDKs
-    url: packages/zotgpt-packages.yml
-  - type: Examples
-    url: examples/zotgpt-gateway-examples.yml
-  - type: AgentSkill
-    url: skills/_index.yml
-  - type: Conformance
-    url: conformance/zotgpt-conformance.yml
-  - type: Compliance
-    url: conformance/zotgpt-conformance.yml
-  - type: DomainSecurity
-    url: security/zotgpt-domain-security.yml
-  - type: WellKnown
-    url: well-known/zotgpt-well-known.yml
-  - type: LLMsTxt
-    url: llms/zotgpt-llms.txt
-  - type: Review
-    url: review.yml
+- type: Website
+  url: https://zotgpt.uci.edu/
+- type: DeveloperPortal
+  url: https://portal.azureapi.zotgpt.uci.edu
+- type: Documentation
+  url: https://zotgpt.uci.edu/services/
+- type: APIReference
+  url: https://zotgpt.uci.edu/services/gateway/
+- type: GettingStarted
+  url: https://zotgpt.uci.edu/services/gateway/clients/
+- type: Support
+  url: https://zotgpt.uci.edu/help/
+- type: PrivacyPolicy
+  url: https://zotgpt.uci.edu/privacy/
+- type: Organization
+  url: https://oit.uci.edu
+- type: Team
+  url: https://zotgpt.uci.edu/team/
+- type: Partners
+  url: https://zotgpt.uci.edu/partners/
+- type: Sustainability
+  url: https://zotgpt.uci.edu/sustainability/
+- type: Training
+  url: https://zotgpt.uci.edu/services/academy/
+- type: Prompts
+  url: https://zotgpt.uci.edu/prompts/
+- type: Marketplace
+  url: https://zotgpt.uci.edu/services/marketplace/
+- type: Blog
+  url: https://www.oit.uci.edu/services/ai/
+- type: Authentication
+  url: authentication/zotgpt-authentication.yml
+- type: Conventions
+  url: conventions/zotgpt-conventions.yml
+- type: Plans
+  url: plans/zotgpt-plans-pricing.yml
+- type: Pricing
+  url: https://zotgpt.uci.edu/services/gateway/
+- type: RateLimits
+  url: rate-limits/zotgpt-rate-limits.yml
+- type: FinOps
+  url: finops/zotgpt-finops.yml
+- type: Lifecycle
+  url: lifecycle/zotgpt-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/zotgpt-lifecycle.yml
+- type: ChangeLog
+  url: changelog/zotgpt-changelog.yml
+- type: Packages
+  url: packages/zotgpt-packages.yml
+- type: SDKs
+  url: packages/zotgpt-packages.yml
+- type: Examples
+  url: examples/zotgpt-gateway-examples.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Conformance
+  url: conformance/zotgpt-conformance.yml
+- type: Compliance
+  url: conformance/zotgpt-conformance.yml
+- type: DomainSecurity
+  url: security/zotgpt-domain-security.yml
+- type: WellKnown
+  url: well-known/zotgpt-well-known.yml
+- type: LLMsTxt
+  url: llms/zotgpt-llms.txt
+- type: Review
+  url: review.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
