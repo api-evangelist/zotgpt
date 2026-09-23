@@ -5,35 +5,7 @@ info:
   summary: UC Irvine's unified AI API gateway, on the Portkey API specification.
   description: 'A faithful, documentation-derived contract for the surface UC Irvine
 
-    publishes for the ZotGPT Gateway.
-
-
-    PROVENANCE: UC Irvine does not publish a machine-readable OpenAPI for the
-
-    Gateway. This document was GENERATED from the operations, base URLs, headers,
-
-    provider aliases, and model slugs named verbatim on
-
-    https://zotgpt.uci.edu/services/gateway/ and
-
-    https://zotgpt.uci.edu/services/gateway/clients/. Only surfaces UCI names in
-
-    its own documentation are included. Request/response schemas follow the
-
-    Portkey / OpenAI-compatible shapes that UCI points clients at; they are
-
-    intentionally permissive rather than exhaustively enumerated, because UCI
-
-    publishes no field-level reference of its own.
-
-
-    NOT A UCI-OWNED HOST: the documented data plane is Portkey''s multi-tenant
-
-    host. UCI tenancy is asserted by the workspace virtual key and the
-
-    x-portkey-provider alias, both minted behind UCInetID.
-
-    '
+    publishes for the ZotGPT Gateway.'
   contact:
     name: UCI OIT AI Team
     email: oit-ai@uci.edu
@@ -85,18 +57,34 @@ paths:
         '429':
           $ref: '#/components/responses/BudgetOrRateLimited'
 components:
-  parameters:
-    PortkeyProvider:
-      name: x-portkey-provider
-      in: header
-      required: false
-      description: The UCI provider alias to route to, for example "@zotgpt-api-bedrock" or "@openai-prod". May also be carried as a prefix on the model slug.
-      schema:
-        type: string
-        examples:
-        - '@zotgpt-api-bedrock'
-        - '@openai-prod'
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+    EmbeddingRequest:
+      type: object
+      required:
+      - model
+      - input
+      properties:
+        model:
+          type: string
+        input:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+      additionalProperties: true
     EmbeddingResponse:
       type: object
       properties:
@@ -118,33 +106,6 @@ components:
         usage:
           $ref: '#/components/schemas/Usage'
       additionalProperties: true
-    EmbeddingRequest:
-      type: object
-      required:
-      - model
-      - input
-      properties:
-        model:
-          type: string
-        input:
-          oneOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-      additionalProperties: true
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
     Usage:
       type: object
       description: Token accounting, which is what the campus budget tiers are drawn against.
@@ -168,6 +129,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    PortkeyProvider:
+      name: x-portkey-provider
+      in: header
+      required: false
+      description: The UCI provider alias to route to, for example "@zotgpt-api-bedrock" or "@openai-prod". May also be carried as a prefix on the model slug.
+      schema:
+        type: string
+        examples:
+        - '@zotgpt-api-bedrock'
+        - '@openai-prod'
   securitySchemes:
     virtualKey:
       type: apiKey

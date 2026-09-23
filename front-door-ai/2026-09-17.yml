@@ -1,0 +1,35 @@
+# Front Door AI Index — zotgpt — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: zotgpt
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: zotgpt.uci.edu
+  final_host: zotgpt.uci.edu
+  ownership: own
+  owner: zotgpt
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 39
+  host_score: 39
+  density: 79.27
+  words: 492
+  tiers:
+    agentic: 6
+    core: 29
+    model: 4
+  ambiguous: 4
+  top_terms:
+    AI: 23
+    OpenAI: 3
+    artificial intelligence: 3
+    chatbot: 3
+    generative ai: 3
+    intelligence: 3
+    AI assistant: 1
+    ChatGPT: 1
+    automation: 1
+    copilot: 1
+    prompts: 1
