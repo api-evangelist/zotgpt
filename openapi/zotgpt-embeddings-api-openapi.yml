@@ -70,21 +70,16 @@ components:
               type: string
             code:
               type: string
-    EmbeddingRequest:
+    Usage:
       type: object
-      required:
-      - model
-      - input
+      description: Token accounting, which is what the campus budget tiers are drawn against.
       properties:
-        model:
-          type: string
-        input:
-          oneOf:
-          - type: string
-          - type: array
-            items:
-              type: string
-      additionalProperties: true
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
     EmbeddingResponse:
       type: object
       properties:
@@ -106,25 +101,30 @@ components:
         usage:
           $ref: '#/components/schemas/Usage'
       additionalProperties: true
-    Usage:
+    EmbeddingRequest:
       type: object
-      description: Token accounting, which is what the campus budget tiers are drawn against.
+      required:
+      - model
+      - input
       properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
+        model:
+          type: string
+        input:
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+      additionalProperties: true
   responses:
-    BudgetOrRateLimited:
-      description: Request rejected by rate limiting or by the per-key spend limit / workspace budget enforcement UCI applies to virtual keys.
+    Unauthorized:
+      description: Missing, revoked, or non-UCI virtual key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing, revoked, or non-UCI virtual key.
+    BudgetOrRateLimited:
+      description: Request rejected by rate limiting or by the per-key spend limit / workspace budget enforcement UCI applies to virtual keys.
       content:
         application/json:
           schema:
