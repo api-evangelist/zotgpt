@@ -58,42 +58,19 @@ paths:
           $ref: '#/components/responses/BudgetOrRateLimited'
 components:
   responses:
-    BudgetOrRateLimited:
-      description: Request rejected by rate limiting or by the per-key spend limit / workspace budget enforcement UCI applies to virtual keys.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing, revoked, or non-UCI virtual key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    PortkeyProvider:
-      name: x-portkey-provider
-      in: header
-      required: false
-      description: The UCI provider alias to route to, for example "@zotgpt-api-bedrock" or "@openai-prod". May also be carried as a prefix on the model slug.
-      schema:
-        type: string
-        examples:
-        - '@zotgpt-api-bedrock'
-        - '@openai-prod'
+    BudgetOrRateLimited:
+      description: Request rejected by rate limiting or by the per-key spend limit / workspace budget enforcement UCI applies to virtual keys.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
     EmbeddingResponse:
       type: object
       properties:
@@ -125,6 +102,18 @@ components:
           type: integer
         total_tokens:
           type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
     EmbeddingRequest:
       type: object
       required:
@@ -140,6 +129,17 @@ components:
             items:
               type: string
       additionalProperties: true
+  parameters:
+    PortkeyProvider:
+      name: x-portkey-provider
+      in: header
+      required: false
+      description: The UCI provider alias to route to, for example "@zotgpt-api-bedrock" or "@openai-prod". May also be carried as a prefix on the model slug.
+      schema:
+        type: string
+        examples:
+        - '@zotgpt-api-bedrock'
+        - '@openai-prod'
   securitySchemes:
     virtualKey:
       type: apiKey

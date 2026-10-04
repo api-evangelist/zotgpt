@@ -81,26 +81,6 @@ created: '2026-07-28'
 modified: '2026-09-16'
 specificationVersion: '0.23'
 apis:
-- aid: zotgpt:zotgpt-chat-api
-  name: ZotGPT (UC Irvine) Chat API
-  description: OpenAI-compatible chat completions.
-  humanURL: https://zotgpt.uci.edu/services/api/
-  baseURL: https://api.zotgpt.uci.edu/v1
-  tags:
-  - Chat
-  properties:
-  - type: OpenAPI
-    url: openapi/zotgpt-chat-api-openapi.yml
-  - type: Documentation
-    url: https://zotgpt.uci.edu/services/api/
-  - type: DeveloperPortal
-    url: https://portal.azureapi.zotgpt.uci.edu
-  - type: Deprecation
-    url: https://zotgpt.uci.edu/services/migrate-azure-api/
-  - type: SignUp
-    url: https://uci.service-now.com/sp?id=kb_article_view&sysparm_article=KB0013367
-  - type: Authentication
-    url: authentication/zotgpt-authentication.yml
 - aid: zotgpt:zotgpt-embeddings-api
   name: ZotGPT (UC Irvine) Embeddings API
   description: Vector embeddings across the campus model catalog.
@@ -111,6 +91,26 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/zotgpt-embeddings-api-openapi.yml
+  - type: Documentation
+    url: https://zotgpt.uci.edu/services/api/
+  - type: DeveloperPortal
+    url: https://portal.azureapi.zotgpt.uci.edu
+  - type: Deprecation
+    url: https://zotgpt.uci.edu/services/migrate-azure-api/
+  - type: SignUp
+    url: https://uci.service-now.com/sp?id=kb_article_view&sysparm_article=KB0013367
+  - type: Authentication
+    url: authentication/zotgpt-authentication.yml
+- aid: zotgpt:zotgpt-chat-completions-api
+  name: ZotGPT (UC Irvine) Chat Completions API
+  description: Chat completions across the campus model catalog.
+  humanURL: https://zotgpt.uci.edu/services/api/
+  baseURL: https://api.zotgpt.uci.edu/v1
+  tags:
+  - Chat Completions
+  properties:
+  - type: OpenAPI
+    url: openapi/zotgpt-chat-completions-api-openapi.yml
   - type: Documentation
     url: https://zotgpt.uci.edu/services/api/
   - type: DeveloperPortal

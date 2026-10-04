@@ -27,13 +27,13 @@ servers:
 security:
 - virtualKey: []
 tags:
-- name: Chat
+- name: Chat Completions
   description: Chat completions across the campus model catalog.
 paths:
   /chat/completions:
     post:
       tags:
-      - Chat
+      - Chat Completions
       operationId: createChatCompletion
       summary: Create a chat completion
       description: Send a chat completion request to any model in the ZotGPT campus Model Catalog. The model is selected by slug; the upstream provider is selected by the x-portkey-provider header carrying a UCI provider alias. Streaming responses are supported.
@@ -78,70 +78,19 @@ paths:
           $ref: '#/components/responses/BudgetOrRateLimited'
 components:
   responses:
-    BudgetOrRateLimited:
-      description: Request rejected by rate limiting or by the per-key spend limit / workspace budget enforcement UCI applies to virtual keys.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing, revoked, or non-UCI virtual key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    BudgetOrRateLimited:
+      description: Request rejected by rate limiting or by the per-key spend limit / workspace budget enforcement UCI applies to virtual keys.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Message:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          type: string
-          enum:
-          - system
-          - user
-          - assistant
-        content:
-          type: string
-    ChatCompletionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-        created:
-          type: integer
-        model:
-          type: string
-        choices:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-              message:
-                $ref: '#/components/schemas/Message'
-              finish_reason:
-                type: string
-        usage:
-          $ref: '#/components/schemas/Usage'
-      additionalProperties: true
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
     ChatCompletionRequest:
       type: object
       required:
@@ -173,6 +122,57 @@ components:
           type: integer
         total_tokens:
           type: integer
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                $ref: '#/components/schemas/Message'
+              finish_reason:
+                type: string
+        usage:
+          $ref: '#/components/schemas/Usage'
+      additionalProperties: true
+    Message:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - system
+          - user
+          - assistant
+        content:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
   parameters:
     PortkeyProvider:
       name: x-portkey-provider
