@@ -82,3 +82,40 @@ notes: >-
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Chat / ClassChat / Creator / Prompt Library / Academy
+    access: free
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Gateway — Free Tier
+    access: free
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Gateway — Standard Tier
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Gateway — Advanced Research
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: API (Deprecated) — Azure-managed
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
