@@ -90,28 +90,44 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    PortkeyProvider:
+      name: x-portkey-provider
+      in: header
+      required: false
+      description: The UCI provider alias to route to, for example "@zotgpt-api-bedrock" or "@openai-prod". May also be carried as a prefix on the model slug.
+      schema:
+        type: string
+        examples:
+        - '@zotgpt-api-bedrock'
+        - '@openai-prod'
   schemas:
-    ChatCompletionRequest:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+            code:
+              type: string
+    Message:
       type: object
       required:
-      - model
-      - messages
+      - role
+      - content
       properties:
-        model:
+        role:
           type: string
-          description: A model slug from the ZotGPT campus Model Catalog, optionally prefixed with a UCI provider alias.
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-        stream:
-          type: boolean
-          default: false
-        temperature:
-          type: number
-        max_tokens:
-          type: integer
-      additionalProperties: true
+          enum:
+          - system
+          - user
+          - assistant
+        content:
+          type: string
     Usage:
       type: object
       description: Token accounting, which is what the campus budget tiers are drawn against.
@@ -147,43 +163,27 @@ components:
         usage:
           $ref: '#/components/schemas/Usage'
       additionalProperties: true
-    Message:
+    ChatCompletionRequest:
       type: object
       required:
-      - role
-      - content
+      - model
+      - messages
       properties:
-        role:
+        model:
           type: string
-          enum:
-          - system
-          - user
-          - assistant
-        content:
-          type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            type:
-              type: string
-            code:
-              type: string
-  parameters:
-    PortkeyProvider:
-      name: x-portkey-provider
-      in: header
-      required: false
-      description: The UCI provider alias to route to, for example "@zotgpt-api-bedrock" or "@openai-prod". May also be carried as a prefix on the model slug.
-      schema:
-        type: string
-        examples:
-        - '@zotgpt-api-bedrock'
-        - '@openai-prod'
+          description: A model slug from the ZotGPT campus Model Catalog, optionally prefixed with a UCI provider alias.
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        stream:
+          type: boolean
+          default: false
+        temperature:
+          type: number
+        max_tokens:
+          type: integer
+      additionalProperties: true
   securitySchemes:
     virtualKey:
       type: apiKey

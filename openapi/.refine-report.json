@@ -7,18 +7,21 @@
     "zotgpt-chat-api-openapi.yml",
     "zotgpt-embeddings-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
     "1 archived document(s) dropped as subsets of other archived documents",
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "zotgpt-gateway-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "superseded outputs removed: zotgpt-chat-completions-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 2 total)"
   ],
   "skipped": [
     "_original/zotgpt-api-openapi.yml: archived document superseded by a larger archived document",
-    "zotgpt-chat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zotgpt-chat-completions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "zotgpt-embeddings-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
